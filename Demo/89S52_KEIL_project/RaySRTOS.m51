@@ -1,0 +1,555 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        10/22/2010  14:00:49  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\PROGRAM FILES\KEIL\C51\BIN\BL51.EXE .\output\main.obj, .\output\RaysRTOS.obj, .\output\CPU.obj, .\output\CPU_ASM.obj 
+>> TO .\output\RaySRTOS PRINT (.\RaySRTOS.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\output\main.obj (MAIN)
+  .\output\RaysRTOS.obj (RAYSRTOS)
+  .\output\CPU.obj (CPU)
+  .\output\CPU_ASM.obj (CPU_ASM)
+  D:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\PROGRAM FILES\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+
+
+LINK MAP OF MODULE:  .\output\RaySRTOS (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     003CH     UNIT         ?DT?MAIN
+            DATA    0044H     0024H     UNIT         ?DT?CPU
+            DATA    0068H     000EH     UNIT         _DATA_GROUP_
+            IDATA   0076H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0008H     UNIT         ?PR?RAYS_START?RAYSRTOS
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0123H     UNIT         ?PR?_CPU_TASKCREATE?CPU
+            CODE    0131H     0063H     UNIT         ?PR?TIMER0ISR?CPU_ASM
+            CODE    0194H     0059H     UNIT         ?PR?OSSCHED?CPU_ASM
+            CODE    01EDH     0058H     UNIT         ?PR?TICKINTHOOK?RAYSRTOS
+            CODE    0245H     0054H     UNIT         ?PR?_RAYS_TIMEDELAY?RAYSRTOS
+            CODE    0299H     0047H     UNIT         ?PR?MAIN?MAIN
+            CODE    02E0H     0026H     UNIT         ?PR?_RAYS_TASKCREATE?RAYSRTOS
+            CODE    0306H     0026H     UNIT         ?PR?CPU_OSSTART?CPU
+            CODE    032CH     0012H     UNIT         ?C?LIB_CODE
+            CODE    033EH     0011H     UNIT         ?PR?TASK0?MAIN
+            CODE    034FH     000EH     UNIT         ?PR?TIMERINIT?MAIN
+            CODE    035DH     000CH     UNIT         ?C_C51STARTUP
+            CODE    0369H     000BH     UNIT         ?PR?TASK1?MAIN
+            CODE    0374H     000BH     UNIT         ?PR?TASK2?MAIN
+            CODE    037FH     000AH     UNIT         ?PR?RAYS_INIT?RAYSRTOS
+            CODE    0389H     0007H     UNIT         ?PR?IDLE_TASK?RAYSRTOS
+
+
+
+OVERLAY MAP OF MODULE:   .\output\RaySRTOS (MAIN)
+
+
+SEGMENT                                 DATA_GROUP 
+  +--> CALLED SEGMENT                 START    LENGTH
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 2
+
+
+-----------------------------------------------------
+?PR?TIMER0ISR?CPU_ASM                 -----    -----
+  +--> ?PR?TICKINTHOOK?RAYSRTOS
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                         -----    -----
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN                         -----    -----
+  +--> ?PR?RAYS_INIT?RAYSRTOS
+  +--> ?PR?TASK0?MAIN
+  +--> ?PR?_RAYS_TASKCREATE?RAYSRTOS
+  +--> ?PR?TASK1?MAIN
+  +--> ?PR?TASK2?MAIN
+  +--> ?PR?RAYS_START?RAYSRTOS
+
+?PR?TASK0?MAIN                        0068H    0001H
+  +--> ?PR?TIMERINIT?MAIN
+  +--> ?PR?_RAYS_TIMEDELAY?RAYSRTOS
+
+?PR?_RAYS_TIMEDELAY?RAYSRTOS          -----    -----
+  +--> ?PR?OSSCHED?CPU_ASM
+
+?PR?_RAYS_TASKCREATE?RAYSRTOS         0068H    0007H
+  +--> ?PR?_CPU_TASKCREATE?CPU
+
+?PR?_CPU_TASKCREATE?CPU               006FH    0007H
+
+?PR?TASK1?MAIN                        -----    -----
+  +--> ?PR?_RAYS_TIMEDELAY?RAYSRTOS
+
+?PR?TASK2?MAIN                        -----    -----
+  +--> ?PR?_RAYS_TIMEDELAY?RAYSRTOS
+
+?PR?RAYS_START?RAYSRTOS               -----    -----
+  +--> ?PR?CPU_OSSTART?CPU
+
+?PR?CPU_OSSTART?CPU                   -----    -----
+  +--> ?PR?IDLE_TASK?RAYSRTOS
+  +--> ?PR?_CPU_TASKCREATE?CPU
+
+
+
+SYMBOL TABLE OF MODULE:  .\output\RaySRTOS (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 3
+
+
+  D:00B8H         PUBLIC        IP
+  C:034FH         PUBLIC        TimerInit
+  C:0299H         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:0008H         PUBLIC        Task0Stack
+  D:001CH         PUBLIC        Task1Stack
+  D:0030H         PUBLIC        Task2Stack
+  C:033EH         PUBLIC        Task0
+  C:0369H         PUBLIC        Task1
+  C:0374H         PUBLIC        Task2
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          TIMERINIT
+  C:034FH         LINE#         10
+  C:034FH         LINE#         11
+  C:034FH         LINE#         12
+  C:0352H         LINE#         13
+  C:0355H         LINE#         14
+  C:0358H         LINE#         15
+  C:035AH         LINE#         16
+  C:035CH         LINE#         17
+  -------         ENDPROC       TIMERINIT
+  -------         PROC          TASK0
+  -------         DO            
+  D:0068H         SYMBOL        asi
+  -------         ENDDO         
+  C:033EH         LINE#         19
+  C:033EH         LINE#         20
+  C:033EH         LINE#         21
+  C:0341H         LINE#         22
+  C:0344H         LINE#         24
+  C:0344H         LINE#         25
+  C:0344H         LINE#         26
+  C:0346H         LINE#         27
+  C:034DH         LINE#         28
+  -------         ENDPROC       TASK0
+  -------         PROC          TASK1
+  C:0369H         LINE#         31
+  C:0369H         LINE#         32
+  C:0369H         LINE#         34
+  C:0369H         LINE#         35
+  C:0369H         LINE#         36
+  C:036BH         LINE#         37
+  C:0372H         LINE#         39
+  -------         ENDPROC       TASK1
+  -------         PROC          TASK2
+  C:0374H         LINE#         43
+  C:0374H         LINE#         44
+  C:0374H         LINE#         46
+  C:0374H         LINE#         47
+  C:0374H         LINE#         48
+  C:0376H         LINE#         49
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 4
+
+
+  C:037DH         LINE#         51
+  -------         ENDPROC       TASK2
+  -------         PROC          MAIN
+  C:0299H         LINE#         55
+  C:0299H         LINE#         56
+  C:0299H         LINE#         57
+  C:029CH         LINE#         58
+  C:02B1H         LINE#         59
+  C:02C6H         LINE#         60
+  C:02DBH         LINE#         61
+  C:02DEH         LINE#         62
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        RAYSRTOS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  C:02E0H         PUBLIC        _RAYS_TaskCreate
+  D:00B8H         PUBLIC        IP
+  C:0245H         PUBLIC        _RAYS_TimeDelay
+  C:0003H         PUBLIC        RAYS_Start
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:037FH         PUBLIC        RAYS_Init
+  C:01EDH         PUBLIC        TickIntHook
+  D:00C8H         PUBLIC        T2CON
+  C:0389H         PUBLIC        Idle_Task
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _RAYS_TASKCREATE
+  D:0001H         SYMBOL        p_Task
+  D:006BH         SYMBOL        p_Stack
+  D:006EH         SYMBOL        Prio
+  C:02E0H         LINE#         47
+  C:02E0H         LINE#         48
+  C:02E0H         LINE#         49
+  C:02E7H         LINE#         50
+  C:02E7H         LINE#         51
+  C:02F6H         LINE#         52
+  C:0305H         LINE#         53
+  C:0305H         LINE#         54
+  -------         ENDPROC       _RAYS_TASKCREATE
+  -------         PROC          RAYS_START
+  C:0003H         LINE#         65
+  C:0003H         LINE#         66
+  C:0003H         LINE#         67
+  C:0008H         LINE#         68
+  -------         ENDPROC       RAYS_START
+  -------         PROC          _RAYS_TIMEDELAY
+  D:0006H         SYMBOL        ticks
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0245H         LINE#         81
+  C:0245H         LINE#         82
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 5
+
+
+  C:0245H         LINE#         83
+  C:0247H         LINE#         84
+  C:024BH         LINE#         85
+  C:024BH         LINE#         86
+  C:024DH         LINE#         87
+  C:025DH         LINE#         88
+  C:026BH         LINE#         89
+  C:026DH         LINE#         90
+  C:0293H         LINE#         91
+  C:0295H         LINE#         92
+  C:0298H         LINE#         93
+  C:0298H         LINE#         94
+  -------         ENDPROC       _RAYS_TIMEDELAY
+  -------         PROC          TICKINTHOOK
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:01EDH         LINE#         151
+  C:01EDH         LINE#         152
+  C:01EDH         LINE#         155
+  C:01EFH         LINE#         156
+  C:01EFH         LINE#         157
+  C:01FEH         LINE#         158
+  C:01FEH         LINE#         159
+  C:020DH         LINE#         160
+  C:0214H         LINE#         161
+  C:0214H         LINE#         162
+  C:0220H         LINE#         163
+  C:0220H         LINE#         164
+  C:0220H         LINE#         165
+  C:0224H         LINE#         166
+  C:0242H         LINE#         167
+  C:0244H         LINE#         168
+  -------         ENDPROC       TICKINTHOOK
+  -------         PROC          IDLE_TASK
+  C:0389H         LINE#         179
+  C:0389H         LINE#         180
+  C:0389H         LINE#         181
+  C:038CH         LINE#         182
+  C:038CH         LINE#         183
+  -------         ENDPROC       IDLE_TASK
+  -------         PROC          RAYS_INIT
+  C:037FH         LINE#         194
+  C:037FH         LINE#         195
+  C:037FH         LINE#         196
+  C:0382H         LINE#         197
+  C:0388H         LINE#         198
+  -------         ENDPROC       RAYS_INIT
+  -------         ENDMOD        RAYSRTOS
+
+  -------         MODULE        CPU
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:0044H         PUBLIC        IdleCount
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 6
+
+
+  D:0081H         PUBLIC        SP
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:000EH         PUBLIC        _CPU_TaskCreate
+  B:0088H.4       PUBLIC        TR0
+  D:0045H         PUBLIC        TCB
+  D:00C8H         PUBLIC        T2CON
+  D:0051H         PUBLIC        OSPrioCur
+  D:0052H         PUBLIC        OSPrioHighRdy
+  D:0053H         PUBLIC        OSRdyTbl
+  D:0054H         PUBLIC        StackIdle
+  D:00D0H         PUBLIC        PSW
+  C:0306H         PUBLIC        CPU_OSStart
+  -------         PROC          _CPU_TASKCREATE
+  D:006FH         SYMBOL        p_Task
+  D:0072H         SYMBOL        p_Stack
+  D:0075H         SYMBOL        t_Prio
+  C:000EH         LINE#         21
+  C:0014H         LINE#         22
+  C:0014H         LINE#         23
+  C:0020H         LINE#         24
+  C:0034H         LINE#         25
+  C:0045H         LINE#         26
+  C:0056H         LINE#         27
+  C:0067H         LINE#         28
+  C:0078H         LINE#         29
+  C:0089H         LINE#         30
+  C:009AH         LINE#         31
+  C:00ACH         LINE#         32
+  C:00BEH         LINE#         33
+  C:00D0H         LINE#         34
+  C:00E2H         LINE#         35
+  C:00F4H         LINE#         36
+  C:0106H         LINE#         37
+  C:0118H         LINE#         38
+  C:0123H         LINE#         39
+  C:0130H         LINE#         40
+  -------         ENDPROC       _CPU_TASKCREATE
+  -------         PROC          CPU_OSSTART
+  C:0306H         LINE#         41
+  C:0306H         LINE#         42
+  C:0306H         LINE#         43
+  C:031BH         LINE#         44
+  C:0329H         LINE#         45
+  C:032BH         LINE#         46
+  -------         ENDPROC       CPU_OSSTART
+  -------         ENDMOD        CPU
+
+  -------         MODULE        CPU_ASM
+  C:0194H         SEGMENT       ?PR?OSSCHED?CPU_ASM
+  C:0131H         SEGMENT       ?PR?TIMER0ISR?CPU_ASM
+  C:0194H         PUBLIC        OSSCHED
+  C:0131H         PUBLIC        TIMER0ISR
+  C:01EAH         SYMBOL        ?C0001
+  B:00D0H.6       SYMBOL        AC
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 7
+
+
+  N:0000H         SYMBOL        CPU_ASM
+  B:00C8H.0       SYMBOL        CP_RL2
+  B:00D0H.7       SYMBOL        CY
+  B:00C8H.1       SYMBOL        C_T2
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  B:00A8H.7       SYMBOL        EA
+  B:00A8H.4       SYMBOL        ES
+  B:00A8H.1       SYMBOL        ET0
+  B:00A8H.3       SYMBOL        ET1
+  B:00A8H.5       SYMBOL        ET2
+  B:00A8H.0       SYMBOL        EX0
+  B:00A8H.2       SYMBOL        EX1
+  B:00C8H.3       SYMBOL        EXEN2
+  B:00C8H.6       SYMBOL        EXF2
+  B:00D0H.5       SYMBOL        F0
+  D:00A8H         SYMBOL        IE
+  B:0088H.1       SYMBOL        IE0
+  B:0088H.3       SYMBOL        IE1
+  B:00B0H.2       SYMBOL        INT0
+  B:00B0H.3       SYMBOL        INT1
+  D:00B8H         SYMBOL        IP
+  B:0088H.0       SYMBOL        IT0
+  B:0088H.2       SYMBOL        IT1
+  B:00D0H.2       SYMBOL        OV
+  B:00D0H.0       SYMBOL        P
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  D:00B0H         SYMBOL        P3
+  D:0087H         SYMBOL        PCON
+  B:00B8H.4       SYMBOL        PS
+  D:00D0H         SYMBOL        PSW
+  B:00B8H.1       SYMBOL        PT0
+  B:00B8H.3       SYMBOL        PT1
+  B:00B8H.5       SYMBOL        PT2
+  B:00B8H.0       SYMBOL        PX0
+  B:00B8H.2       SYMBOL        PX1
+  B:0098H.2       SYMBOL        RB8
+  D:00CBH         SYMBOL        RCAP2H
+  D:00CAH         SYMBOL        RCAP2L
+  B:00C8H.5       SYMBOL        RCLK
+  B:00B0H.7       SYMBOL        RD
+  B:0098H.4       SYMBOL        REN
+  B:0098H.0       SYMBOL        RI
+  B:00D0H.3       SYMBOL        RS0
+  B:00D0H.4       SYMBOL        RS1
+  B:00B0H.0       SYMBOL        RXD
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  B:0098H.7       SYMBOL        SM0
+  B:0098H.6       SYMBOL        SM1
+  B:0098H.5       SYMBOL        SM2
+  D:0081H         SYMBOL        SP
+  B:00B0H.4       SYMBOL        T0
+  B:00B0H.5       SYMBOL        T1
+  B:0090H.0       SYMBOL        T2
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 8
+
+
+  D:00C8H         SYMBOL        T2CON
+  B:0090H.1       SYMBOL        T2EX
+  B:0098H.3       SYMBOL        TB8
+  B:00C8H.4       SYMBOL        TCLK
+  D:0088H         SYMBOL        TCON
+  B:0088H.5       SYMBOL        TF0
+  B:0088H.7       SYMBOL        TF1
+  B:00C8H.7       SYMBOL        TF2
+  D:008CH         SYMBOL        TH0
+  D:008DH         SYMBOL        TH1
+  D:00CDH         SYMBOL        TH2
+  B:0098H.1       SYMBOL        TI
+  D:008AH         SYMBOL        TL0
+  D:008BH         SYMBOL        TL1
+  D:00CCH         SYMBOL        TL2
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  B:0088H.6       SYMBOL        TR1
+  B:00C8H.2       SYMBOL        TR2
+  B:00B0H.1       SYMBOL        TXD
+  B:00B0H.6       SYMBOL        WR
+  C:0194H         LINE#         28
+  C:0196H         LINE#         29
+  C:0198H         LINE#         30
+  C:019AH         LINE#         31
+  C:019CH         LINE#         32
+  C:019EH         LINE#         33
+  C:01A0H         LINE#         34
+  C:01A2H         LINE#         35
+  C:01A4H         LINE#         36
+  C:01A6H         LINE#         37
+  C:01A8H         LINE#         38
+  C:01AAH         LINE#         39
+  C:01ACH         LINE#         40
+  C:01AEH         LINE#         41
+  C:01B0H         LINE#         42
+  C:01B2H         LINE#         43
+  C:01B4H         LINE#         44
+  C:01B6H         LINE#         46
+  C:01B8H         LINE#         47
+  C:01BBH         LINE#         48
+  C:01BCH         LINE#         49
+  C:01BEH         LINE#         50
+  C:01BFH         LINE#         51
+  C:01C1H         LINE#         53
+  C:01C4H         LINE#         55
+  C:01C6H         LINE#         56
+  C:01C9H         LINE#         57
+  C:01CAH         LINE#         58
+  C:01CCH         LINE#         59
+  C:01CDH         LINE#         60
+  C:01CEH         LINE#         61
+  C:01D0H         LINE#         62
+  C:01D2H         LINE#         63
+  C:01D4H         LINE#         64
+  C:01D6H         LINE#         65
+  C:01D8H         LINE#         66
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 9
+
+
+  C:01DAH         LINE#         67
+  C:01DCH         LINE#         68
+  C:01DEH         LINE#         69
+  C:01E0H         LINE#         70
+  C:01E2H         LINE#         71
+  C:01E4H         LINE#         72
+  C:01E6H         LINE#         73
+  C:01E8H         LINE#         74
+  C:01EAH         LINE#         76
+  C:01ECH         LINE#         77
+  C:000BH         LINE#         93
+  C:0131H         LINE#         98
+  C:0133H         LINE#         99
+  C:0135H         LINE#         100
+  C:0137H         LINE#         101
+  C:0139H         LINE#         102
+  C:013BH         LINE#         104
+  C:013EH         LINE#         105
+  C:0140H         LINE#         106
+  C:0143H         LINE#         107
+  C:0146H         LINE#         108
+  C:0148H         LINE#         110
+  C:014AH         LINE#         111
+  C:014CH         LINE#         112
+  C:014EH         LINE#         113
+  C:0150H         LINE#         114
+  C:0152H         LINE#         115
+  C:0154H         LINE#         116
+  C:0156H         LINE#         117
+  C:0158H         LINE#         118
+  C:015BH         LINE#         119
+  C:015DH         LINE#         120
+  C:0160H         LINE#         121
+  C:0161H         LINE#         122
+  C:0163H         LINE#         123
+  C:0164H         LINE#         124
+  C:0166H         LINE#         126
+  C:0169H         LINE#         128
+  C:016BH         LINE#         129
+  C:016EH         LINE#         130
+  C:016FH         LINE#         131
+  C:0171H         LINE#         132
+  C:0172H         LINE#         133
+  C:0173H         LINE#         134
+  C:0175H         LINE#         136
+  C:0177H         LINE#         137
+  C:0179H         LINE#         138
+  C:017BH         LINE#         139
+  C:017DH         LINE#         140
+  C:017FH         LINE#         141
+  C:0181H         LINE#         142
+  C:0183H         LINE#         143
+  C:0185H         LINE#         144
+  C:0187H         LINE#         145
+  C:0189H         LINE#         146
+  C:018BH         LINE#         147
+  C:018DH         LINE#         148
+BL51 BANKED LINKER/LOCATER V6.22                                                      10/22/2010  14:00:49  PAGE 10
+
+
+  C:018FH         LINE#         149
+  C:0191H         LINE#         150
+  C:0193H         LINE#         151
+  -------         ENDMOD        CPU_ASM
+
+  -------         MODULE        ?C?CSTPTR
+  C:032CH         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+Program Size: data=119.0 xdata=0 code=912
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

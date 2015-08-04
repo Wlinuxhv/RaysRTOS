@@ -1,0 +1,6 @@
+".\output\main.obj",
+".\output\RaysRTOS.obj",
+".\output\CPU.obj",
+".\output\CPU_ASM.obj" 
+TO ".\output\RaySRTOS" 
+PRINT(".\RaySRTOS.m51") RAMSIZE(256) 

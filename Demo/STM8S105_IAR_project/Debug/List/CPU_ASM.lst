@@ -1,0 +1,32 @@
+###############################################################################
+#                                                                             #
+# IAR Assembler V1.10.0.50013 for STM8                  22/Oct/2010  11:56:34 #
+# Copyright 2010 IAR Systems AB.                                              #
+#                                                                             #
+#    Source file  =  D:\RaySRTOS\CPU\STM8_IAR\CPU_ASM.s                       #
+#    Command line =  D:\RaySRTOS\CPU\STM8_IAR\CPU_ASM.s -M<> -r -ld           #
+#                    D:\RaySRTOS\Demo\STM8S105_IAR_project\Debug\List\        #
+#                    --code_model small --data_model medium -o                #
+#                    D:\RaySRTOS\Demo\STM8S105_IAR_project\Debug\Obj\         #
+#    List file    =  D:\RaySRTOS\Demo\STM8S105_IAR_project\Debug\List\CPU_ASM #
+#                    .lst                                                     #
+#    Object file  =  D:\RaySRTOS\Demo\STM8S105_IAR_project\Debug\Obj\CPU_ASM. #
+#                    o                                                        #
+#                                                                             #
+#                                                                             #
+###############################################################################
+
+##############################################################################
+# Module RaysRTOS_ASM                                                        #
+##############################################################################
+
+    181                        
+ 
+   2 bytes in section .far.bss       , module RaysRTOS_ASM
+ 282 bytes in section .far_func.text , module RaysRTOS_ASM
+ 
+ 282 bytes of CODE memory  in module RaysRTOS_ASM
+   2 bytes of DATA memory  in module RaysRTOS_ASM
+
+Errors: none
+Warnings: none

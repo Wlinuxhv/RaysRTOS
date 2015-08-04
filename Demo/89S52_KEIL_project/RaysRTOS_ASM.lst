@@ -1,0 +1,133 @@
+C51 COMPILER V9.00   RAYSRTOS_ASM                                                          10/20/2010 15:17:54 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE RAYSRTOS_ASM
+OBJECT MODULE PLACED IN .\output\RaysRTOS_ASM.obj
+COMPILER INVOKED BY: D:\Program Files\KEIL\C51\BIN\C51.EXE ..\..\CPU\8051_89S52_KEIL\RaysRTOS_ASM.c BROWSE DEBUG OBJECTE
+                    -XTEND PRINT(.\RaysRTOS_ASM.lst) OBJECT(.\output\RaysRTOS_ASM.obj)
+
+line level    source
+
+   1          /***************************************************************************************** 
+   2           *  RaysRTOS/RaysRTOS_ASM.c 
+   3           * 
+   4           *  RaysRTOS核心文件 
+   5           * 
+   6           *  Copyright (C) 2010  苑臣芒 
+   7           * 
+   8           *  2010-07-09  RaysRTOS1.0-AT89C52 版本
+   9           *  
+  10           *      全抢占式调度 提供系统延时 挂起 恢复等功能 最大任务量8个                                            
+  11           *****************************************************************************************/
+  12          
+  13          #include "RaysRTOS.h"
+*** WARNING C318 IN LINE 13 OF ..\..\CPU\8051_89S52_KEIL\RaysRTOS_ASM.c: can't open file 'RaysRTOS.h'
+  14          
+  15          
+  16          /******************全局变量定义***************/
+  17           extern struct TaskCtrBlock  TCB[OS_TASKS + 1];         // 定义任务控制块                               
+*** ERROR C202 IN LINE 17 OF ..\..\CPU\8051_89S52_KEIL\RAYSRTOS_ASM.C: 'OS_TASKS': undefined identifier
+*** ERROR C136 IN LINE 17 OF ..\..\CPU\8051_89S52_KEIL\RAYSRTOS_ASM.C: invalid dimension size: [0]
+  18           extern INT8U   OSPrioCur;                                      // 正在运行的任务                               
+*** ERROR C129 IN LINE 18 OF ..\..\CPU\8051_89S52_KEIL\RAYSRTOS_ASM.C: missing ';' before 'OSPrioCur'
+  19           extern INT8U   OSPrioHighRdy   ;                       // 更高优先级的任务                             
+  20           extern INT8U *TEMP_SP; 
+  21          /*
+  22          +---------------------------------------------------------------------------------------+
+  23          |函数名称：     OSSched                                                                                                                                         |
+  24          |---------------------------------------------------------------------------------------|
+  25          |函数原型：     void OSSched(prio)                                                                                                                      |
+  26          |                                                                                                                                                                               |
+  27          |函数功能：     任务级切换函数                                                                                                                          |                                                                                                                                                                               |
+  28          +---------------------------------------------------------------------------------------+
+  29          */
+  30          void OSSched(void)
+  31          {
+  32           OS_ENTER_CRITICAL();                //关中断
+  33                                                           
+  34                  if(OSPrioHighRdy != OSPrioCur)                  /* 如果不是当前运行的任务，进行任务调度 */
+  35                  {
+  36                          __asm PUSH ACC       //保护当前任务寄存器
+  37                          __asm PUSH B
+  38                          __asm PUSH DPH
+  39                          __asm PUSH DPL
+  40                          __asm PUSH PSW
+  41                          __asm PUSH AR0       //0-7为工作寄存器
+  42                          __asm PUSH AR1
+  43                          __asm PUSH AR2
+  44                          __asm PUSH AR3
+  45                          __asm PUSH AR4
+  46                          __asm PUSH AR5
+  47                          __asm PUSH AR6
+  48                          __asm PUSH AR7   
+  49          // TCB[OSPrioCur].OSTCBStkPtr=SP;       //保存当前堆栈指针
+  50           SPPoint();
+C51 COMPILER V9.00   RAYSRTOS_ASM                                                          10/20/2010 15:17:54 PAGE 2   
+
+  51           *TEMP_SP=SP;
+  52           OSPrioCur = OSPrioHighRdy;                     // 更新OSPrioCur
+  53           SPPoint();
+  54           SP=*TEMP_SP;
+  55          // SP=TCB[OSPrioCur].OSTCBStkPtr;     //任务堆栈指针切换
+  56                          __asm POP AR7                   //恢复任务寄存器
+  57                          __asm POP AR6
+  58                          __asm POP AR5
+  59                          __asm POP AR4
+  60                          __asm POP AR3
+  61                          __asm POP AR2
+  62                          __asm POP AR1
+  63                          __asm POP AR0
+  64                          __asm POP PSW
+  65                          __asm POP DPL
+  66                          __asm POP DPH
+  67                          __asm POP B
+  68                          __asm POP ACC
+  69                  }
+  70           OS_EXIT_CRITICAL();      //开中断
+  71          }
+  72          
+  73          /*
+  74          +---------------------------------------------------------------------------------------+
+  75          |函数名称：     Timer0ISR                                                                                                                                       |
+  76          |---------------------------------------------------------------------------------------|
+  77          |函数原型：     void Timer0ISR(prio)                                                                                                            |
+  78          |                                                                                                                                                                               |
+  79          |函数功能：     中断级切换函数                                                                                                                          |                                                                                                                                                                               |
+  80          +---------------------------------------------------------------------------------------+
+  81          */
+  82          void Timer0ISR(void) interrupt 1 using 0
+  83          {
+  84              OS_ENTER_CRITICAL();            //关中断
+  85              TH0=0xfe;
+  86              TL0=0x00;
+  87                  TR0=0;
+  88           __asm PUSH AR0
+  89           __asm PUSH AR1
+  90           __asm PUSH AR2
+  91           __asm PUSH AR3
+  92           __asm PUSH AR4
+  93           __asm PUSH AR5
+  94           __asm PUSH AR6
+  95           __asm PUSH AR7
+  96          
+  97           TickIntHook();
+  98            TCB[OSPrioCur].OSTCBStkPtr=SP;   //保存当前堆栈指针
+  99                          OSPrioCur = OSPrioHighRdy; // 更新OSPrioCur 
+ 100            SP=TCB[OSPrioCur].OSTCBStkPtr;   //任务堆栈指针切换
+ 101          
+ 102           __asm POP AR7
+ 103           __asm POP AR6
+ 104           __asm POP AR5
+ 105           __asm POP AR4
+ 106           __asm POP AR3
+ 107           __asm POP AR2
+ 108           __asm POP AR1
+ 109           __asm POP AR0
+ 110           TR0=1;
+ 111           OS_EXIT_CRITICAL();              //开中断
+ 112          }
+C51 COMPILER V9.00   RAYSRTOS_ASM                                                          10/20/2010 15:17:54 PAGE 3   
+
+ 113           
+
+C51 COMPILATION COMPLETE.  1 WARNING(S),  3 ERROR(S)

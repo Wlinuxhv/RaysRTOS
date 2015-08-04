@@ -1,0 +1,902 @@
+
+RaySRTOS.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         000003f8  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .bss          000000de  00800060  00800060  0000046c  2**0
+                  ALLOC
+  2 .debug_aranges 00000080  00000000  00000000  0000046c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_pubnames 000001cb  00000000  00000000  000004ec  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   0000066f  00000000  00000000  000006b7  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 00000374  00000000  00000000  00000d26  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   00000925  00000000  00000000  0000109a  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000160  00000000  00000000  000019c0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000024c  00000000  00000000  00001b20  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    000001a0  00000000  00000000  00001d6c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	21 c0       	rjmp	.+66     	; 0x46 <__bad_interrupt>
+   4:	20 c0       	rjmp	.+64     	; 0x46 <__bad_interrupt>
+   6:	1f c0       	rjmp	.+62     	; 0x46 <__bad_interrupt>
+   8:	1e c0       	rjmp	.+60     	; 0x46 <__bad_interrupt>
+   a:	1d c0       	rjmp	.+58     	; 0x46 <__bad_interrupt>
+   c:	1c c0       	rjmp	.+56     	; 0x46 <__bad_interrupt>
+   e:	1b c0       	rjmp	.+54     	; 0x46 <__bad_interrupt>
+  10:	1a c0       	rjmp	.+52     	; 0x46 <__bad_interrupt>
+  12:	e5 c0       	rjmp	.+458    	; 0x1de <__vector_9>
+  14:	18 c0       	rjmp	.+48     	; 0x46 <__bad_interrupt>
+  16:	17 c0       	rjmp	.+46     	; 0x46 <__bad_interrupt>
+  18:	16 c0       	rjmp	.+44     	; 0x46 <__bad_interrupt>
+  1a:	15 c0       	rjmp	.+42     	; 0x46 <__bad_interrupt>
+  1c:	14 c0       	rjmp	.+40     	; 0x46 <__bad_interrupt>
+  1e:	13 c0       	rjmp	.+38     	; 0x46 <__bad_interrupt>
+  20:	12 c0       	rjmp	.+36     	; 0x46 <__bad_interrupt>
+  22:	11 c0       	rjmp	.+34     	; 0x46 <__bad_interrupt>
+  24:	10 c0       	rjmp	.+32     	; 0x46 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+
+00000032 <__do_clear_bss>:
+  32:	11 e0       	ldi	r17, 0x01	; 1
+  34:	a0 e6       	ldi	r26, 0x60	; 96
+  36:	b0 e0       	ldi	r27, 0x00	; 0
+  38:	01 c0       	rjmp	.+2      	; 0x3c <.do_clear_bss_start>
+
+0000003a <.do_clear_bss_loop>:
+  3a:	1d 92       	st	X+, r1
+
+0000003c <.do_clear_bss_start>:
+  3c:	ae 33       	cpi	r26, 0x3E	; 62
+  3e:	b1 07       	cpc	r27, r17
+  40:	e1 f7       	brne	.-8      	; 0x3a <.do_clear_bss_loop>
+  42:	08 d0       	rcall	.+16     	; 0x54 <main>
+  44:	d7 c1       	rjmp	.+942    	; 0x3f4 <_exit>
+
+00000046 <__bad_interrupt>:
+  46:	dc cf       	rjmp	.-72     	; 0x0 <__vectors>
+
+00000048 <delays>:
+//用户函数定义
+void delays(unsigned char xx)
+{
+ while(xx--);
+
+}
+  48:	08 95       	ret
+
+0000004a <delaysss>:
+{
+ unsigned char i=0;
+ i=10;
+   delays(i);
+
+}
+  4a:	08 95       	ret
+
+0000004c <TimerInit>:
+}
+
+/******************系统节拍初始化***************/
+	 void TimerInit(void)
+{
+	TCNT0=0;
+  4c:	12 be       	out	0x32, r1	; 50
+	TCCR0=_BV(CS02)|_BV(CS00);
+  4e:	85 e0       	ldi	r24, 0x05	; 5
+  50:	83 bf       	out	0x33, r24	; 51
+}
+  52:	08 95       	ret
+
+00000054 <main>:
+
+/****************主函数***************/
+int main(void)
+{
+	 RAYS_Init();
+  54:	70 d0       	rcall	.+224    	; 0x136 <RAYS_Init>
+	 cli();
+  56:	f8 94       	cli
+	 DDRB=0X01;
+  58:	81 e0       	ldi	r24, 0x01	; 1
+  5a:	87 bb       	out	0x17, r24	; 23
+	 DDRD=0xff;
+  5c:	9f ef       	ldi	r25, 0xFF	; 255
+  5e:	91 bb       	out	0x11, r25	; 17
+	 DDRC=0X01;
+  60:	84 bb       	out	0x14, r24	; 20
+	 RAYS_TaskCreate(Task0,&Task0Stack[49],0);
+  62:	8f e5       	ldi	r24, 0x5F	; 95
+  64:	90 e0       	ldi	r25, 0x00	; 0
+  66:	63 ec       	ldi	r22, 0xC3	; 195
+  68:	70 e0       	ldi	r23, 0x00	; 0
+  6a:	40 e0       	ldi	r20, 0x00	; 0
+  6c:	a5 d0       	rcall	.+330    	; 0x1b8 <RAYS_TaskCreate>
+	 RAYS_TaskCreate(Task1,&Task1Stack[49],1);
+  6e:	86 e5       	ldi	r24, 0x56	; 86
+  70:	90 e0       	ldi	r25, 0x00	; 0
+  72:	65 ef       	ldi	r22, 0xF5	; 245
+  74:	70 e0       	ldi	r23, 0x00	; 0
+  76:	41 e0       	ldi	r20, 0x01	; 1
+  78:	9f d0       	rcall	.+318    	; 0x1b8 <RAYS_TaskCreate>
+	 RAYS_TaskCreate(Task2,&Task2Stack[49],2);
+  7a:	88 e4       	ldi	r24, 0x48	; 72
+  7c:	90 e0       	ldi	r25, 0x00	; 0
+  7e:	61 e9       	ldi	r22, 0x91	; 145
+  80:	70 e0       	ldi	r23, 0x00	; 0
+  82:	42 e0       	ldi	r20, 0x02	; 2
+  84:	99 d0       	rcall	.+306    	; 0x1b8 <RAYS_TaskCreate>
+}
+
+/******************系统节拍初始化***************/
+	 void TimerInit(void)
+{
+	TCNT0=0;
+  86:	12 be       	out	0x32, r1	; 50
+	TCCR0=_BV(CS02)|_BV(CS00);
+  88:	85 e0       	ldi	r24, 0x05	; 5
+  8a:	83 bf       	out	0x33, r24	; 51
+	 DDRC=0X01;
+	 RAYS_TaskCreate(Task0,&Task0Stack[49],0);
+	 RAYS_TaskCreate(Task1,&Task1Stack[49],1);
+	 RAYS_TaskCreate(Task2,&Task2Stack[49],2);
+	 TimerInit();
+	 RAYS_Start();	 //此函数执行完系统即发生调度
+  8c:	8f d0       	rcall	.+286    	; 0x1ac <RAYS_Start>
+  8e:	ff cf       	rjmp	.-2      	; 0x8e <main+0x3a>
+
+00000090 <Task2>:
+
+ }
+}
+/******************任务Task2定义***************/
+void Task2(void)
+{
+  90:	0f 93       	push	r16
+  92:	1f 93       	push	r17
+INT8U ss=0;
+ while(1)
+ {
+	 PORTC^=0x01;
+  94:	01 e0       	ldi	r16, 0x01	; 1
+  96:	85 b3       	in	r24, 0x15	; 21
+  98:	80 27       	eor	r24, r16
+  9a:	85 bb       	out	0x15, r24	; 21
+  9c:	10 e0       	ldi	r17, 0x00	; 0
+	 for(ss=0;ss<10;ss++)
+		 RAYS_TimeDelay(4);
+  9e:	84 e0       	ldi	r24, 0x04	; 4
+  a0:	90 e0       	ldi	r25, 0x00	; 0
+  a2:	51 d0       	rcall	.+162    	; 0x146 <RAYS_TimeDelay>
+{
+INT8U ss=0;
+ while(1)
+ {
+	 PORTC^=0x01;
+	 for(ss=0;ss<10;ss++)
+  a4:	1f 5f       	subi	r17, 0xFF	; 255
+  a6:	1a 30       	cpi	r17, 0x0A	; 10
+  a8:	d1 f7       	brne	.-12     	; 0x9e <Task2+0xe>
+  aa:	f5 cf       	rjmp	.-22     	; 0x96 <Task2+0x6>
+
+000000ac <Task1>:
+   RAYS_TimeDelay(3);
+ }
+}
+/******************任务Task1定义***************/
+void Task1(void)
+{
+  ac:	1f 93       	push	r17
+ while(1)
+ {
+   PORTB^=0x01;
+  ae:	11 e0       	ldi	r17, 0x01	; 1
+  b0:	88 b3       	in	r24, 0x18	; 24
+  b2:	81 27       	eor	r24, r17
+  b4:	88 bb       	out	0x18, r24	; 24
+   RAYS_TimeDelay(4);
+  b6:	84 e0       	ldi	r24, 0x04	; 4
+  b8:	90 e0       	ldi	r25, 0x00	; 0
+  ba:	45 d0       	rcall	.+138    	; 0x146 <RAYS_TimeDelay>
+  bc:	f9 cf       	rjmp	.-14     	; 0xb0 <Task1+0x4>
+
+000000be <Task0>:
+   delays(i);
+
+}
+/******************任务Task0定义***************/
+void Task0(void)
+{
+  be:	1f 93       	push	r17
+  c0:	10 e0       	ldi	r17, 0x00	; 0
+	 unsigned char i=0;
+ while(1)
+ {
+   PORTD=i++;
+  c2:	12 bb       	out	0x12, r17	; 18
+  c4:	1f 5f       	subi	r17, 0xFF	; 255
+   RAYS_TimeDelay(3);
+  c6:	83 e0       	ldi	r24, 0x03	; 3
+  c8:	90 e0       	ldi	r25, 0x00	; 0
+  ca:	3d d0       	rcall	.+122    	; 0x146 <RAYS_TimeDelay>
+  cc:	fa cf       	rjmp	.-12     	; 0xc2 <Task0+0x4>
+
+000000ce <TickIntHook>:
+|函数功能:  T0中断钩子程序                                                              |
+|有关说明:  用来为需要延时的任务进行计时                                                |
++---------------------------------------------------------------------------------------+
+*/
+ void TickIntHook(void)
+	{
+  ce:	40 91 3c 01 	lds	r20, 0x013C
+  d2:	ec e2       	ldi	r30, 0x2C	; 44
+  d4:	f1 e0       	ldi	r31, 0x01	; 1
+  d6:	20 e0       	ldi	r18, 0x00	; 0
+  d8:	30 e0       	ldi	r19, 0x00	; 0
+			if(TCB[i].OSTCBDly )
+			{
+				TCB[i].OSTCBDly --;
+				if(TCB[i].OSTCBDly == 0)		// 当任务时钟到时,必须是由定时器减时的才行
+				{
+					OSSetPrioRdy(i);		    // 使任务可以重新运行		
+  da:	61 e0       	ldi	r22, 0x01	; 1
+  dc:	70 e0       	ldi	r23, 0x00	; 0
+	{
+		INT8U i;
+
+		for(i = 0; i < OS_TASKS; i++)			// 刷新各任务时钟 
+		{
+			if(TCB[i].OSTCBDly )
+  de:	80 81       	ld	r24, Z
+  e0:	91 81       	ldd	r25, Z+1	; 0x01
+  e2:	00 97       	sbiw	r24, 0x00	; 0
+  e4:	69 f0       	breq	.+26     	; 0x100 <TickIntHook+0x32>
+			{
+				TCB[i].OSTCBDly --;
+  e6:	01 97       	sbiw	r24, 0x01	; 1
+  e8:	91 83       	std	Z+1, r25	; 0x01
+  ea:	80 83       	st	Z, r24
+				if(TCB[i].OSTCBDly == 0)		// 当任务时钟到时,必须是由定时器减时的才行
+  ec:	89 2b       	or	r24, r25
+  ee:	41 f4       	brne	.+16     	; 0x100 <TickIntHook+0x32>
+				{
+					OSSetPrioRdy(i);		    // 使任务可以重新运行		
+  f0:	cb 01       	movw	r24, r22
+  f2:	02 2e       	mov	r0, r18
+  f4:	02 c0       	rjmp	.+4      	; 0xfa <TickIntHook+0x2c>
+  f6:	88 0f       	add	r24, r24
+  f8:	99 1f       	adc	r25, r25
+  fa:	0a 94       	dec	r0
+  fc:	e2 f7       	brpl	.-8      	; 0xf6 <TickIntHook+0x28>
+  fe:	48 2b       	or	r20, r24
+ 100:	2f 5f       	subi	r18, 0xFF	; 255
+ 102:	3f 4f       	sbci	r19, 0xFF	; 255
+ 104:	34 96       	adiw	r30, 0x04	; 4
+*/
+ void TickIntHook(void)
+	{
+		INT8U i;
+
+		for(i = 0; i < OS_TASKS; i++)			// 刷新各任务时钟 
+ 106:	23 30       	cpi	r18, 0x03	; 3
+ 108:	31 05       	cpc	r19, r1
+ 10a:	49 f7       	brne	.-46     	; 0xde <TickIntHook+0x10>
+ 10c:	40 93 3c 01 	sts	0x013C, r20
+				{
+					OSSetPrioRdy(i);		    // 使任务可以重新运行		
+				}
+			}
+		}
+		for( i = 0;(i < OS_TASKS) && (!(OSRdyTbl & (0x01<<i)));i++ );//查找最高优先级算法
+ 110:	40 ff       	sbrs	r20, 0
+ 112:	02 c0       	rjmp	.+4      	; 0x118 <TickIntHook+0x4a>
+ 114:	80 e0       	ldi	r24, 0x00	; 0
+ 116:	09 c0       	rjmp	.+18     	; 0x12a <TickIntHook+0x5c>
+ 118:	41 ff       	sbrs	r20, 1
+ 11a:	02 c0       	rjmp	.+4      	; 0x120 <TickIntHook+0x52>
+ 11c:	81 e0       	ldi	r24, 0x01	; 1
+ 11e:	05 c0       	rjmp	.+10     	; 0x12a <TickIntHook+0x5c>
+ 120:	42 fd       	sbrc	r20, 2
+ 122:	02 c0       	rjmp	.+4      	; 0x128 <TickIntHook+0x5a>
+ 124:	83 e0       	ldi	r24, 0x03	; 3
+ 126:	01 c0       	rjmp	.+2      	; 0x12a <TickIntHook+0x5c>
+ 128:	82 e0       	ldi	r24, 0x02	; 2
+			OSPrioHighRdy = i;	
+ 12a:	80 93 f6 00 	sts	0x00F6, r24
+} 
+ 12e:	08 95       	ret
+
+00000130 <Idle_Task>:
+|有关说明:  空闲任务必须永远处于就绪状态                                                |
++---------------------------------------------------------------------------------------+
+*/
+void Idle_Task(void)
+{	
+	IdleCount = 0;
+ 130:	10 92 3d 01 	sts	0x013D, r1
+ 134:	ff cf       	rjmp	.-2      	; 0x134 <Idle_Task+0x4>
+
+00000136 <RAYS_Init>:
+|函数功能:  初始化系统全局变量                                                          |
++---------------------------------------------------------------------------------------+
+*/
+void RAYS_Init(void)
+{
+	OSRdyTbl = 0;
+ 136:	10 92 3c 01 	sts	0x013C, r1
+	OSPrioCur = OSPrioHighRdy = OS_TASKS;
+ 13a:	83 e0       	ldi	r24, 0x03	; 3
+ 13c:	80 93 f6 00 	sts	0x00F6, r24
+ 140:	80 93 29 01 	sts	0x0129, r24
+}
+ 144:	08 95       	ret
+
+00000146 <RAYS_TimeDelay>:
+|入口参数:  延时的时间，任务等待时钟节拍的个数                                          |
+|有关说明:  延时数不得超出TICKS_TypeDef的范围                                           |
++---------------------------------------------------------------------------------------+
+*/
+void RAYS_TimeDelay(TICKS_TypeDef ticks)
+{
+ 146:	ac 01       	movw	r20, r24
+TICKS_TypeDef i=0;
+	if(ticks)                           	//如果需要延时         
+ 148:	00 97       	sbiw	r24, 0x00	; 0
+ 14a:	79 f1       	breq	.+94     	; 0x1aa <RAYS_TimeDelay+0x64>
+	{
+		OS_ENTER_CRITICAL();
+ 14c:	f8 94       	cli
+		OSDelPrioRdy(OSPrioCur);			// 把任务从就绪表中删去 
+ 14e:	e0 91 29 01 	lds	r30, 0x0129
+ 152:	f0 e0       	ldi	r31, 0x00	; 0
+ 154:	81 e0       	ldi	r24, 0x01	; 1
+ 156:	90 e0       	ldi	r25, 0x00	; 0
+ 158:	0e 2e       	mov	r0, r30
+ 15a:	02 c0       	rjmp	.+4      	; 0x160 <RAYS_TimeDelay+0x1a>
+ 15c:	88 0f       	add	r24, r24
+ 15e:	99 1f       	adc	r25, r25
+ 160:	0a 94       	dec	r0
+ 162:	e2 f7       	brpl	.-8      	; 0x15c <RAYS_TimeDelay+0x16>
+ 164:	80 95       	com	r24
+ 166:	20 91 3c 01 	lds	r18, 0x013C
+ 16a:	82 23       	and	r24, r18
+ 16c:	80 93 3c 01 	sts	0x013C, r24
+		TCB[OSPrioCur].OSTCBDly = ticks;	// 设置任务延时节拍数   
+ 170:	ee 0f       	add	r30, r30
+ 172:	ff 1f       	adc	r31, r31
+ 174:	ee 0f       	add	r30, r30
+ 176:	ff 1f       	adc	r31, r31
+ 178:	e4 5d       	subi	r30, 0xD4	; 212
+ 17a:	fe 4f       	sbci	r31, 0xFE	; 254
+ 17c:	51 83       	std	Z+1, r21	; 0x01
+ 17e:	40 83       	st	Z, r20
+		OS_EXIT_CRITICAL();
+ 180:	78 94       	sei
+		for( i = 0;(i < OS_TASKS) && (!(OSRdyTbl & (0x01<<i)));i++ );//查找最高优先级算法
+ 182:	80 ff       	sbrs	r24, 0
+ 184:	03 c0       	rjmp	.+6      	; 0x18c <RAYS_TimeDelay+0x46>
+ 186:	80 e0       	ldi	r24, 0x00	; 0
+ 188:	90 e0       	ldi	r25, 0x00	; 0
+ 18a:	0c c0       	rjmp	.+24     	; 0x1a4 <RAYS_TimeDelay+0x5e>
+ 18c:	81 ff       	sbrs	r24, 1
+ 18e:	03 c0       	rjmp	.+6      	; 0x196 <RAYS_TimeDelay+0x50>
+ 190:	81 e0       	ldi	r24, 0x01	; 1
+ 192:	90 e0       	ldi	r25, 0x00	; 0
+ 194:	07 c0       	rjmp	.+14     	; 0x1a4 <RAYS_TimeDelay+0x5e>
+ 196:	82 fd       	sbrc	r24, 2
+ 198:	03 c0       	rjmp	.+6      	; 0x1a0 <RAYS_TimeDelay+0x5a>
+ 19a:	83 e0       	ldi	r24, 0x03	; 3
+ 19c:	90 e0       	ldi	r25, 0x00	; 0
+ 19e:	02 c0       	rjmp	.+4      	; 0x1a4 <RAYS_TimeDelay+0x5e>
+ 1a0:	82 e0       	ldi	r24, 0x02	; 2
+ 1a2:	90 e0       	ldi	r25, 0x00	; 0
+			OSPrioHighRdy = i;	
+ 1a4:	80 93 f6 00 	sts	0x00F6, r24
+		OSSched();                          // 任务调度
+ 1a8:	7b d0       	rcall	.+246    	; 0x2a0 <OSSched>
+ 1aa:	08 95       	ret
+
+000001ac <RAYS_Start>:
+|函数功能:  系统启动                                                                    |
++---------------------------------------------------------------------------------------+
+*/
+void RAYS_Start(void)
+{
+    OSPrioCur = OSPrioHighRdy=0;   // 运行最高优先级任务
+ 1ac:	10 92 f6 00 	sts	0x00F6, r1
+ 1b0:	10 92 29 01 	sts	0x0129, r1
+    CPU_OSStart();                 // 具体平台系统启动函数								
+ 1b4:	09 d1       	rcall	.+530    	; 0x3c8 <CPU_OSStart>
+}
+ 1b6:	08 95       	ret
+
+000001b8 <RAYS_TaskCreate>:
+|函数功能:  建立任务                                                                    |
+|入口参数:  *Task：任务函数地址；*Stack：任务栈顶指针；Prio:任务优先级                  |
++---------------------------------------------------------------------------------------+
+*/
+void RAYS_TaskCreate(void (*p_Task)(void),STACK_TypeDef *p_Stack,PRIO_TypeDef Prio)
+{
+ 1b8:	1f 93       	push	r17
+ 1ba:	14 2f       	mov	r17, r20
+    if(Prio <= OS_TASKS)
+ 1bc:	44 30       	cpi	r20, 0x04	; 4
+ 1be:	68 f4       	brcc	.+26     	; 0x1da <RAYS_TaskCreate+0x22>
+    {
+        CPU_TaskCreate(p_Task,p_Stack,Prio);  //具体平台任务创建函数  	
+ 1c0:	e2 d0       	rcall	.+452    	; 0x386 <CPU_TaskCreate>
+        OSSetPrioRdy(Prio);      			  // 在任务就绪表中登记	
+ 1c2:	81 e0       	ldi	r24, 0x01	; 1
+ 1c4:	90 e0       	ldi	r25, 0x00	; 0
+ 1c6:	02 c0       	rjmp	.+4      	; 0x1cc <RAYS_TaskCreate+0x14>
+ 1c8:	88 0f       	add	r24, r24
+ 1ca:	99 1f       	adc	r25, r25
+ 1cc:	1a 95       	dec	r17
+ 1ce:	e2 f7       	brpl	.-8      	; 0x1c8 <RAYS_TaskCreate+0x10>
+ 1d0:	20 91 3c 01 	lds	r18, 0x013C
+ 1d4:	28 2b       	or	r18, r24
+ 1d6:	20 93 3c 01 	sts	0x013C, r18
+    }
+}
+ 1da:	1f 91       	pop	r17
+ 1dc:	08 95       	ret
+
+000001de <__vector_9>:
+|																						|
+|函数功能：	中断级切换函数 														   		|																						|
++---------------------------------------------------------------------------------------+
+*/
+SIGNAL(SIG_OVERFLOW0)
+{
+ 1de:	1f 92       	push	r1
+ 1e0:	0f 92       	push	r0
+ 1e2:	0f b6       	in	r0, 0x3f	; 63
+ 1e4:	0f 92       	push	r0
+ 1e6:	11 24       	eor	r1, r1
+ 1e8:	2f 93       	push	r18
+ 1ea:	3f 93       	push	r19
+ 1ec:	4f 93       	push	r20
+ 1ee:	5f 93       	push	r21
+ 1f0:	6f 93       	push	r22
+ 1f2:	7f 93       	push	r23
+ 1f4:	8f 93       	push	r24
+ 1f6:	9f 93       	push	r25
+ 1f8:	af 93       	push	r26
+ 1fa:	bf 93       	push	r27
+ 1fc:	ef 93       	push	r30
+ 1fe:	ff 93       	push	r31
+	OS_ENTER_CRITICAL();           //关中断
+ 200:	f8 94       	cli
+	TCNT0=TCNT0_INIT;
+ 202:	8b ed       	ldi	r24, 0xDB	; 219
+ 204:	82 bf       	out	0x32, r24	; 50
+	//push all 除了中断自动保存的寄存器
+  __asm__ __volatile__("PUSH R2                    \n\t");   
+ 206:	2f 92       	push	r2
+  __asm__ __volatile__("PUSH R3                    \n\t");   
+ 208:	3f 92       	push	r3
+  __asm__ __volatile__("PUSH R4                    \n\t");   
+ 20a:	4f 92       	push	r4
+  __asm__ __volatile__("PUSH R5                    \n\t"); 
+ 20c:	5f 92       	push	r5
+  __asm__ __volatile__("PUSH R6                    \n\t"); 
+ 20e:	6f 92       	push	r6
+  __asm__ __volatile__("PUSH R7                    \n\t");  
+ 210:	7f 92       	push	r7
+  __asm__ __volatile__("PUSH R8                    \n\t");  
+ 212:	8f 92       	push	r8
+  __asm__ __volatile__("PUSH R9                    \n\t");   
+ 214:	9f 92       	push	r9
+  __asm__ __volatile__("PUSH R10                   \n\t"); 
+ 216:	af 92       	push	r10
+  __asm__ __volatile__("PUSH R11                   \n\t"); 
+ 218:	bf 92       	push	r11
+  __asm__ __volatile__("PUSH R12                   \n\t"); 
+ 21a:	cf 92       	push	r12
+  __asm__ __volatile__("PUSH R13                   \n\t"); 
+ 21c:	df 92       	push	r13
+  __asm__ __volatile__("PUSH R14                   \n\t"); 
+ 21e:	ef 92       	push	r14
+  __asm__ __volatile__("PUSH R15                   \n\t");   
+ 220:	ff 92       	push	r15
+  __asm__ __volatile__("PUSH R16                   \n\t");  
+ 222:	0f 93       	push	r16
+  __asm__ __volatile__("PUSH R17                   \n\t");  
+ 224:	1f 93       	push	r17
+  __asm__ __volatile__("PUSH R28                   \n\t");  //R28与R29用于建立在堆栈上的指针 
+ 226:	cf 93       	push	r28
+  __asm__ __volatile__("PUSH R29                   \n\t");  //入栈完成 
+ 228:	df 93       	push	r29
+
+  	TickIntHook();
+ 22a:	51 df       	rcall	.-350    	; 0xce <TickIntHook>
+	SPPoint();   
+ 22c:	9e d0       	rcall	.+316    	; 0x36a <SPPoint>
+	*TEMP_SP=SP;						//保存当前堆栈指针
+ 22e:	8d b7       	in	r24, 0x3d	; 61
+ 230:	9e b7       	in	r25, 0x3e	; 62
+ 232:	e0 91 3a 01 	lds	r30, 0x013A
+ 236:	f0 91 3b 01 	lds	r31, 0x013B
+ 23a:	91 83       	std	Z+1, r25	; 0x01
+ 23c:	80 83       	st	Z, r24
+	OSPrioCur = OSPrioHighRdy;			// 更新OSPrioCur
+ 23e:	80 91 f6 00 	lds	r24, 0x00F6
+ 242:	80 93 29 01 	sts	0x0129, r24
+	SPPoint();
+ 246:	91 d0       	rcall	.+290    	; 0x36a <SPPoint>
+	SP=*TEMP_SP;            			//任务堆栈指针切换
+ 248:	e0 91 3a 01 	lds	r30, 0x013A
+ 24c:	f0 91 3b 01 	lds	r31, 0x013B
+ 250:	80 81       	ld	r24, Z
+ 252:	91 81       	ldd	r25, Z+1	; 0x01
+ 254:	9e bf       	out	0x3e, r25	; 62
+ 256:	8d bf       	out	0x3d, r24	; 61
+	//pop all 除了中断自动保存的寄存器
+  __asm__ __volatile__("POP  R29                   \n\t");     
+ 258:	df 91       	pop	r29
+  __asm__ __volatile__("POP  R28                   \n\t"); 
+ 25a:	cf 91       	pop	r28
+  __asm__ __volatile__("POP  R17                   \n\t"); 
+ 25c:	1f 91       	pop	r17
+  __asm__ __volatile__("POP  R16                   \n\t"); 
+ 25e:	0f 91       	pop	r16
+  __asm__ __volatile__("POP  R15                   \n\t");     
+ 260:	ff 90       	pop	r15
+  __asm__ __volatile__("POP  R14                   \n\t");     
+ 262:	ef 90       	pop	r14
+  __asm__ __volatile__("POP  R13                   \n\t");     
+ 264:	df 90       	pop	r13
+  __asm__ __volatile__("POP  R12                   \n\t");     
+ 266:	cf 90       	pop	r12
+  __asm__ __volatile__("POP  R11                   \n\t");     
+ 268:	bf 90       	pop	r11
+  __asm__ __volatile__("POP  R10                   \n\t"); 
+ 26a:	af 90       	pop	r10
+  __asm__ __volatile__("POP  R9                    \n\t"); 
+ 26c:	9f 90       	pop	r9
+  __asm__ __volatile__("POP  R8                    \n\t"); 
+ 26e:	8f 90       	pop	r8
+  __asm__ __volatile__("POP  R7                    \n\t");   
+ 270:	7f 90       	pop	r7
+  __asm__ __volatile__("POP  R6                    \n\t"); 
+ 272:	6f 90       	pop	r6
+  __asm__ __volatile__("POP  R5                    \n\t"); 
+ 274:	5f 90       	pop	r5
+  __asm__ __volatile__("POP  R4                    \n\t");  
+ 276:	4f 90       	pop	r4
+  __asm__ __volatile__("POP  R3                    \n\t"); 
+ 278:	3f 90       	pop	r3
+  __asm__ __volatile__("POP  R2                    \n\t");   
+ 27a:	2f 90       	pop	r2
+  OS_EXIT_CRITICAL();              //开中断
+ 27c:	78 94       	sei
+} 
+ 27e:	ff 91       	pop	r31
+ 280:	ef 91       	pop	r30
+ 282:	bf 91       	pop	r27
+ 284:	af 91       	pop	r26
+ 286:	9f 91       	pop	r25
+ 288:	8f 91       	pop	r24
+ 28a:	7f 91       	pop	r23
+ 28c:	6f 91       	pop	r22
+ 28e:	5f 91       	pop	r21
+ 290:	4f 91       	pop	r20
+ 292:	3f 91       	pop	r19
+ 294:	2f 91       	pop	r18
+ 296:	0f 90       	pop	r0
+ 298:	0f be       	out	0x3f, r0	; 63
+ 29a:	0f 90       	pop	r0
+ 29c:	1f 90       	pop	r1
+ 29e:	18 95       	reti
+
+000002a0 <OSSched>:
+|函数功能：	任务级切换函数 														   		|																						|
++---------------------------------------------------------------------------------------+
+*/
+void OSSched(void)
+{
+	OS_ENTER_CRITICAL();                	//关中断
+ 2a0:	f8 94       	cli
+				
+	if(OSPrioHighRdy != OSPrioCur)			// 如果不是当前运行的任务，进行任务调度 */
+ 2a2:	90 91 f6 00 	lds	r25, 0x00F6
+ 2a6:	80 91 29 01 	lds	r24, 0x0129
+ 2aa:	98 17       	cp	r25, r24
+ 2ac:	09 f4       	brne	.+2      	; 0x2b0 <OSSched+0x10>
+ 2ae:	5b c0       	rjmp	.+182    	; 0x366 <OSSched+0xc6>
+	{
+ 	//push all
+  __asm__ __volatile__("PUSH __zero_reg__          \n\t");  //R1 
+ 2b0:	1f 92       	push	r1
+  __asm__ __volatile__("PUSH __tmp_reg__           \n\t");  //R0  
+ 2b2:	0f 92       	push	r0
+  __asm__ __volatile__("IN   __tmp_reg__,__SREG__  \n\t");  //保存状态寄存器SREG 
+ 2b4:	0f b6       	in	r0, 0x3f	; 63
+  __asm__ __volatile__("PUSH __tmp_reg__           \n\t"); 
+ 2b6:	0f 92       	push	r0
+  __asm__ __volatile__("CLR  __zero_reg__          \n\t");  //R1重新清零    
+ 2b8:	11 24       	eor	r1, r1
+  __asm__ __volatile__("PUSH R18                   \n\t"); 
+ 2ba:	2f 93       	push	r18
+  __asm__ __volatile__("PUSH R19                   \n\t"); 
+ 2bc:	3f 93       	push	r19
+  __asm__ __volatile__("PUSH R20                   \n\t"); 
+ 2be:	4f 93       	push	r20
+  __asm__ __volatile__("PUSH R21                   \n\t"); 
+ 2c0:	5f 93       	push	r21
+  __asm__ __volatile__("PUSH R22                   \n\t"); 
+ 2c2:	6f 93       	push	r22
+  __asm__ __volatile__("PUSH R23                   \n\t"); 
+ 2c4:	7f 93       	push	r23
+  __asm__ __volatile__("PUSH R24                   \n\t"); 
+ 2c6:	8f 93       	push	r24
+  __asm__ __volatile__("PUSH R25                   \n\t"); 
+ 2c8:	9f 93       	push	r25
+  __asm__ __volatile__("PUSH R26                   \n\t"); 
+ 2ca:	af 93       	push	r26
+  __asm__ __volatile__("PUSH R27                   \n\t"); 
+ 2cc:	bf 93       	push	r27
+  __asm__ __volatile__("PUSH R30                   \n\t");     
+ 2ce:	ef 93       	push	r30
+  __asm__ __volatile__("PUSH R31                   \n\t");
+ 2d0:	ff 93       	push	r31
+  __asm__ __volatile__("PUSH R2                    \n\t");   
+ 2d2:	2f 92       	push	r2
+  __asm__ __volatile__("PUSH R3                    \n\t");   
+ 2d4:	3f 92       	push	r3
+  __asm__ __volatile__("PUSH R4                    \n\t");   
+ 2d6:	4f 92       	push	r4
+  __asm__ __volatile__("PUSH R5                    \n\t"); 
+ 2d8:	5f 92       	push	r5
+  __asm__ __volatile__("PUSH R6                    \n\t"); 
+ 2da:	6f 92       	push	r6
+  __asm__ __volatile__("PUSH R7                    \n\t");  
+ 2dc:	7f 92       	push	r7
+  __asm__ __volatile__("PUSH R8                    \n\t");  
+ 2de:	8f 92       	push	r8
+  __asm__ __volatile__("PUSH R9                    \n\t");   
+ 2e0:	9f 92       	push	r9
+  __asm__ __volatile__("PUSH R10                   \n\t"); 
+ 2e2:	af 92       	push	r10
+  __asm__ __volatile__("PUSH R11                   \n\t"); 
+ 2e4:	bf 92       	push	r11
+  __asm__ __volatile__("PUSH R12                   \n\t"); 
+ 2e6:	cf 92       	push	r12
+  __asm__ __volatile__("PUSH R13                   \n\t"); 
+ 2e8:	df 92       	push	r13
+  __asm__ __volatile__("PUSH R14                   \n\t"); 
+ 2ea:	ef 92       	push	r14
+  __asm__ __volatile__("PUSH R15                   \n\t");   
+ 2ec:	ff 92       	push	r15
+  __asm__ __volatile__("PUSH R16                   \n\t");  
+ 2ee:	0f 93       	push	r16
+  __asm__ __volatile__("PUSH R17                   \n\t");  
+ 2f0:	1f 93       	push	r17
+  __asm__ __volatile__("PUSH R28                   \n\t");  //R28与R29用于建立在堆栈上的指针 
+ 2f2:	cf 93       	push	r28
+  __asm__ __volatile__("PUSH R29                   \n\t");  //入栈完成 
+ 2f4:	df 93       	push	r29
+	SPPoint();   
+ 2f6:	39 d0       	rcall	.+114    	; 0x36a <SPPoint>
+	*TEMP_SP=SP;						//保存当前堆栈指针
+ 2f8:	8d b7       	in	r24, 0x3d	; 61
+ 2fa:	9e b7       	in	r25, 0x3e	; 62
+ 2fc:	e0 91 3a 01 	lds	r30, 0x013A
+ 300:	f0 91 3b 01 	lds	r31, 0x013B
+ 304:	91 83       	std	Z+1, r25	; 0x01
+ 306:	80 83       	st	Z, r24
+	OSPrioCur = OSPrioHighRdy;			// 更新OSPrioCur
+ 308:	80 91 f6 00 	lds	r24, 0x00F6
+ 30c:	80 93 29 01 	sts	0x0129, r24
+	SPPoint();
+ 310:	2c d0       	rcall	.+88     	; 0x36a <SPPoint>
+	SP=*TEMP_SP;            			//任务堆栈指针切换
+ 312:	e0 91 3a 01 	lds	r30, 0x013A
+ 316:	f0 91 3b 01 	lds	r31, 0x013B
+ 31a:	80 81       	ld	r24, Z
+ 31c:	91 81       	ldd	r25, Z+1	; 0x01
+ 31e:	9e bf       	out	0x3e, r25	; 62
+ 320:	8d bf       	out	0x3d, r24	; 61
+ 	//pop all
+  __asm__ __volatile__("POP  R29                   \n\t");     
+ 322:	df 91       	pop	r29
+  __asm__ __volatile__("POP  R28                   \n\t"); 
+ 324:	cf 91       	pop	r28
+  __asm__ __volatile__("POP  R17                   \n\t"); 
+ 326:	1f 91       	pop	r17
+  __asm__ __volatile__("POP  R16                   \n\t"); 
+ 328:	0f 91       	pop	r16
+  __asm__ __volatile__("POP  R15                   \n\t");     
+ 32a:	ff 90       	pop	r15
+  __asm__ __volatile__("POP  R14                   \n\t");     
+ 32c:	ef 90       	pop	r14
+  __asm__ __volatile__("POP  R13                   \n\t");     
+ 32e:	df 90       	pop	r13
+  __asm__ __volatile__("POP  R12                   \n\t");     
+ 330:	cf 90       	pop	r12
+  __asm__ __volatile__("POP  R11                   \n\t");     
+ 332:	bf 90       	pop	r11
+  __asm__ __volatile__("POP  R10                   \n\t"); 
+ 334:	af 90       	pop	r10
+  __asm__ __volatile__("POP  R9                    \n\t"); 
+ 336:	9f 90       	pop	r9
+  __asm__ __volatile__("POP  R8                    \n\t"); 
+ 338:	8f 90       	pop	r8
+  __asm__ __volatile__("POP  R7                    \n\t");   
+ 33a:	7f 90       	pop	r7
+  __asm__ __volatile__("POP  R6                    \n\t"); 
+ 33c:	6f 90       	pop	r6
+  __asm__ __volatile__("POP  R5                    \n\t"); 
+ 33e:	5f 90       	pop	r5
+  __asm__ __volatile__("POP  R4                    \n\t");  
+ 340:	4f 90       	pop	r4
+  __asm__ __volatile__("POP  R3                    \n\t"); 
+ 342:	3f 90       	pop	r3
+  __asm__ __volatile__("POP  R2                    \n\t");        
+ 344:	2f 90       	pop	r2
+  __asm__ __volatile__("POP  R31                   \n\t");     
+ 346:	ff 91       	pop	r31
+  __asm__ __volatile__("POP  R30                   \n\t");     
+ 348:	ef 91       	pop	r30
+  __asm__ __volatile__("POP  R27                   \n\t");     
+ 34a:	bf 91       	pop	r27
+  __asm__ __volatile__("POP  R26                   \n\t");     
+ 34c:	af 91       	pop	r26
+  __asm__ __volatile__("POP  R25                   \n\t");     
+ 34e:	9f 91       	pop	r25
+  __asm__ __volatile__("POP  R24                   \n\t");     
+ 350:	8f 91       	pop	r24
+  __asm__ __volatile__("POP  R23                   \n\t");     
+ 352:	7f 91       	pop	r23
+  __asm__ __volatile__("POP  R22                   \n\t");     
+ 354:	6f 91       	pop	r22
+  __asm__ __volatile__("POP  R21                   \n\t");     
+ 356:	5f 91       	pop	r21
+  __asm__ __volatile__("POP  R20                   \n\t");     
+ 358:	4f 91       	pop	r20
+  __asm__ __volatile__("POP  R19                   \n\t"); 
+ 35a:	3f 91       	pop	r19
+  __asm__ __volatile__("POP  R18                   \n\t");   
+ 35c:	2f 91       	pop	r18
+  __asm__ __volatile__("POP  __tmp_reg__           \n\t");      //SERG 出栈并恢复 
+ 35e:	0f 90       	pop	r0
+  __asm__ __volatile__("OUT  __SREG__,__tmp_reg__  \n\t");     
+ 360:	0f be       	out	0x3f, r0	; 63
+  __asm__ __volatile__("POP  __tmp_reg__           \n\t");      //R0 出栈 
+ 362:	0f 90       	pop	r0
+  __asm__ __volatile__("POP  __zero_reg__          \n\t");      //R1 出栈 
+ 364:	1f 90       	pop	r1
+	}
+	OS_EXIT_CRITICAL();     //开中断
+ 366:	78 94       	sei
+}
+ 368:	08 95       	ret
+
+0000036a <SPPoint>:
+|函数功能：	处理C与汇编中SP指向问题 														|
++---------------------------------------------------------------------------------------+
+*/	
+ 	void SPPoint(void)
+	{
+	  TEMP_SP=&(TCB[OSPrioCur].OSTCBStkPtr);	
+ 36a:	80 91 29 01 	lds	r24, 0x0129
+ 36e:	90 e0       	ldi	r25, 0x00	; 0
+ 370:	88 0f       	add	r24, r24
+ 372:	99 1f       	adc	r25, r25
+ 374:	88 0f       	add	r24, r24
+ 376:	99 1f       	adc	r25, r25
+ 378:	86 5d       	subi	r24, 0xD6	; 214
+ 37a:	9e 4f       	sbci	r25, 0xFE	; 254
+ 37c:	90 93 3b 01 	sts	0x013B, r25
+ 380:	80 93 3a 01 	sts	0x013A, r24
+	}
+ 384:	08 95       	ret
+
+00000386 <CPU_TaskCreate>:
+
+void  CPU_TaskCreate(void (*p_Task)(void),INT8U *p_Stack,INT8U t_Prio)
+	{
+ 386:	fb 01       	movw	r30, r22
+	unsigned char i=0;
+		*(p_Stack--) = 	(unsigned char)((unsigned int)p_Task&0x00ff);;	  		//函数入口	
+ 388:	80 83       	st	Z, r24
+		*(p_Stack--) =  (unsigned char)(((unsigned int)p_Task&0xff00)>>8);      	//函数入口
+ 38a:	92 93       	st	-Z, r25
+		*(p_Stack--) =0x00;                    	  //R1 __zero_reg__             
+ 38c:	12 92       	st	-Z, r1
+  		*(p_Stack--) =0x00;                    	  //R0 __tmp_reg__ 
+ 38e:	12 92       	st	-Z, r1
+  		*(p_Stack--) =0x80;                    	  //SREG 在任务中，开启全局中断         
+ 390:	80 e8       	ldi	r24, 0x80	; 128
+ 392:	82 93       	st	-Z, r24
+ 394:	cf 01       	movw	r24, r30
+ 396:	01 97       	sbiw	r24, 0x01	; 1
+ 398:	fc 01       	movw	r30, r24
+ 39a:	20 e0       	ldi	r18, 0x00	; 0
+ 	 for(i=0;i<30;i++)  						
+   		*(p_Stack--)=i;                    		   						
+ 39c:	20 83       	st	Z, r18
+ 39e:	31 97       	sbiw	r30, 0x01	; 1
+		*(p_Stack--) = 	(unsigned char)((unsigned int)p_Task&0x00ff);;	  		//函数入口	
+		*(p_Stack--) =  (unsigned char)(((unsigned int)p_Task&0xff00)>>8);      	//函数入口
+		*(p_Stack--) =0x00;                    	  //R1 __zero_reg__             
+  		*(p_Stack--) =0x00;                    	  //R0 __tmp_reg__ 
+  		*(p_Stack--) =0x80;                    	  //SREG 在任务中，开启全局中断         
+ 	 for(i=0;i<30;i++)  						
+ 3a0:	2f 5f       	subi	r18, 0xFF	; 255
+ 3a2:	2e 31       	cpi	r18, 0x1E	; 30
+ 3a4:	d9 f7       	brne	.-10     	; 0x39c <CPU_TaskCreate+0x16>
+   		*(p_Stack--)=i;                    		   						
+		TCB[t_Prio].OSTCBStkPtr = (INT16U)p_Stack;// 将人工堆栈的栈顶，保存到堆栈的数组中
+ 3a6:	e4 2f       	mov	r30, r20
+ 3a8:	f0 e0       	ldi	r31, 0x00	; 0
+ 3aa:	ee 0f       	add	r30, r30
+ 3ac:	ff 1f       	adc	r31, r31
+ 3ae:	ee 0f       	add	r30, r30
+ 3b0:	ff 1f       	adc	r31, r31
+ 3b2:	df 01       	movw	r26, r30
+ 3b4:	a6 5d       	subi	r26, 0xD6	; 214
+ 3b6:	be 4f       	sbci	r27, 0xFE	; 254
+ 3b8:	4e 97       	sbiw	r24, 0x1e	; 30
+ 3ba:	8d 93       	st	X+, r24
+ 3bc:	9c 93       	st	X, r25
+		TCB[t_Prio].OSTCBDly = 0;	
+ 3be:	e4 5d       	subi	r30, 0xD4	; 212
+ 3c0:	fe 4f       	sbci	r31, 0xFE	; 254
+ 3c2:	11 82       	std	Z+1, r1	; 0x01
+ 3c4:	10 82       	st	Z, r1
+	}
+ 3c6:	08 95       	ret
+
+000003c8 <CPU_OSStart>:
+
+void CPU_OSStart(void)
+   {
+    CPU_TaskCreate(Idle_Task,&StackIdle[StackSizeIdle-1],OS_TASKS);
+ 3c8:	88 e9       	ldi	r24, 0x98	; 152
+ 3ca:	90 e0       	ldi	r25, 0x00	; 0
+ 3cc:	68 e2       	ldi	r22, 0x28	; 40
+ 3ce:	71 e0       	ldi	r23, 0x01	; 1
+ 3d0:	43 e0       	ldi	r20, 0x03	; 3
+ 3d2:	d9 df       	rcall	.-78     	; 0x386 <CPU_TaskCreate>
+	OSPrioCur = OSPrioHighRdy=0;			// 在就绪表中查找最高级的就绪任务 
+ 3d4:	10 92 f6 00 	sts	0x00F6, r1
+ 3d8:	10 92 29 01 	sts	0x0129, r1
+	SP=TCB[OSPrioCur].OSTCBStkPtr+33; 		//将栈顶移到pc位置,准备弹出
+ 3dc:	80 91 2a 01 	lds	r24, 0x012A
+ 3e0:	90 91 2b 01 	lds	r25, 0x012B
+ 3e4:	81 96       	adiw	r24, 0x21	; 33
+ 3e6:	9e bf       	out	0x3e, r25	; 62
+ 3e8:	8d bf       	out	0x3d, r24	; 61
+	TIMSK|=_BV(TOIE0);
+ 3ea:	89 b7       	in	r24, 0x39	; 57
+ 3ec:	81 60       	ori	r24, 0x01	; 1
+ 3ee:	89 bf       	out	0x39, r24	; 57
+	sei();	
+ 3f0:	78 94       	sei
+   }
+ 3f2:	08 95       	ret
+
+000003f4 <_exit>:
+ 3f4:	f8 94       	cli
+
+000003f6 <__stop_program>:
+ 3f6:	ff cf       	rjmp	.-2      	; 0x3f6 <__stop_program>

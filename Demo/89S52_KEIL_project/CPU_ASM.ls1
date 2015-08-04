@@ -1,0 +1,564 @@
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN .\output\CPU_ASM.OBJ
+ASSEMBLER INVOKED BY: D:\Program Files\KEIL\C51\BIN\A51.EXE .\output\CPU_ASM.src PR(.\CPU_ASM.ls1) EP DEBUG
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; .\output\CPU_ASM.SRC generated from: ..\..\CPU\8051_KEIL\CPU_ASM.c
+                       2     ; COMPILER INVOKED BY:
+                       3     ;        D:\Program Files\KEIL\C51\BIN\C51.EXE ..\..\CPU\8051_KEIL\CPU_ASM.c BROWSE INCDIR(
+                             ..\..\CPU\8051_KEIL;..\..\Kernel) DEBUG OBJECTEXTEND PRINT(.\CPU_ASM.lst) SRC(.\output\CPU_ASM.SRC)
+                       4     
+                       5     $nomod51 
+                       6     
+                       7     NAME    CPU_ASM
+                       8     
+  0080                 9     P0      DATA    080H
+  0090                10     P1      DATA    090H
+  00A0                11     P2      DATA    0A0H
+  00B0                12     P3      DATA    0B0H
+  00D6                13     AC      BIT     0D0H.6
+  00B4                14     T0      BIT     0B0H.4
+  00B5                15     T1      BIT     0B0H.5
+  00AF                16     EA      BIT     0A8H.7
+  0090                17     T2      BIT     090H.0
+  00A8                18     IE      DATA    0A8H
+  0080                19     P0_0    BIT     080H.0
+  0090                20     P1_0    BIT     090H.0
+  0081                21     P0_1    BIT     080H.1
+  00A0                22     P2_0    BIT     0A0H.0
+  0091                23     P1_1    BIT     090H.1
+  0082                24     P0_2    BIT     080H.2
+  00B0                25     P3_0    BIT     0B0H.0
+  00A1                26     P2_1    BIT     0A0H.1
+  0092                27     P1_2    BIT     090H.2
+  0083                28     P0_3    BIT     080H.3
+  00B1                29     P3_1    BIT     0B0H.1
+  00A2                30     P2_2    BIT     0A0H.2
+  0093                31     P1_3    BIT     090H.3
+  0084                32     P0_4    BIT     080H.4
+  00B2                33     P3_2    BIT     0B0H.2
+  00A3                34     P2_3    BIT     0A0H.3
+  0094                35     P1_4    BIT     090H.4
+  0085                36     P0_5    BIT     080H.5
+  00CE                37     EXF2    BIT     0C8H.6
+  00B7                38     RD      BIT     0B0H.7
+  00B3                39     P3_3    BIT     0B0H.3
+  00A4                40     P2_4    BIT     0A0H.4
+  0095                41     P1_5    BIT     090H.5
+  0086                42     P0_6    BIT     080H.6
+  00B4                43     P3_4    BIT     0B0H.4
+  00A5                44     P2_5    BIT     0A0H.5
+  0096                45     P1_6    BIT     090H.6
+  0087                46     P0_7    BIT     080H.7
+  00B5                47     P3_5    BIT     0B0H.5
+  00AC                48     ES      BIT     0A8H.4
+  00A6                49     P2_6    BIT     0A0H.6
+  0097                50     P1_7    BIT     090H.7
+  00B6                51     P3_6    BIT     0B0H.6
+  00A7                52     P2_7    BIT     0A0H.7
+  00B8                53     IP      DATA    0B8H
+  00B7                54     P3_7    BIT     0B0H.7
+  0098                55     RI      BIT     098H.0
+  00D7                56     CY      BIT     0D0H.7
+  00B2                57     INT0    BIT     0B0H.2
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     2
+
+  00B3                58     INT1    BIT     0B0H.3
+  0099                59     TI      BIT     098H.1
+  00CB                60     RCAP2H  DATA    0CBH
+  00BC                61     PS      BIT     0B8H.4
+  0081                62     SP      DATA    081H
+  0091                63     T2EX    BIT     090H.1
+  00D2                64     OV      BIT     0D0H.2
+  00CA                65     RCAP2L  DATA    0CAH
+  00C9                66     C_T2    BIT     0C8H.1
+  00B6                67     WR      BIT     0B0H.6
+  00CD                68     RCLK    BIT     0C8H.5
+  00CC                69     TCLK    BIT     0C8H.4
+  0099                70     SBUF    DATA    099H
+  0087                71     PCON    DATA    087H
+  0098                72     SCON    DATA    098H
+  0089                73     TMOD    DATA    089H
+  0088                74     TCON    DATA    088H
+  0089                75     IE0     BIT     088H.1
+  008B                76     IE1     BIT     088H.3
+  00F0                77     B       DATA    0F0H
+  00C8                78     CP_RL2  BIT     0C8H.0
+  00E0                79     ACC     DATA    0E0H
+  00A9                80     ET0     BIT     0A8H.1
+  00AB                81     ET1     BIT     0A8H.3
+  008D                82     TF0     BIT     088H.5
+  00AD                83     ET2     BIT     0A8H.5
+  008F                84     TF1     BIT     088H.7
+  00CF                85     TF2     BIT     0C8H.7
+  009A                86     RB8     BIT     098H.2
+  008C                87     TH0     DATA    08CH
+  00A8                88     EX0     BIT     0A8H.0
+  0088                89     IT0     BIT     088H.0
+  008D                90     TH1     DATA    08DH
+  00AA                91     EX1     BIT     0A8H.2
+  009B                92     TB8     BIT     098H.3
+  008A                93     IT1     BIT     088H.2
+  00CD                94     TH2     DATA    0CDH
+  00D0                95     P       BIT     0D0H.0
+  009F                96     SM0     BIT     098H.7
+  008A                97     TL0     DATA    08AH
+  009E                98     SM1     BIT     098H.6
+  008B                99     TL1     DATA    08BH
+  009D               100     SM2     BIT     098H.5
+  00CC               101     TL2     DATA    0CCH
+  00B9               102     PT0     BIT     0B8H.1
+  00D3               103     RS0     BIT     0D0H.3
+  00BB               104     PT1     BIT     0B8H.3
+  00D4               105     RS1     BIT     0D0H.4
+  00BD               106     PT2     BIT     0B8H.5
+  008C               107     TR0     BIT     088H.4
+  008E               108     TR1     BIT     088H.6
+  00CA               109     TR2     BIT     0C8H.2
+  00B8               110     PX0     BIT     0B8H.0
+  00BA               111     PX1     BIT     0B8H.2
+  0083               112     DPH     DATA    083H
+  0082               113     DPL     DATA    082H
+  00CB               114     EXEN2   BIT     0C8H.3
+  009C               115     REN     BIT     098H.4
+  00C9               116     T2MOD   DATA    0C9H
+  00C8               117     T2CON   DATA    0C8H
+  00B0               118     RXD     BIT     0B0H.0
+  00B1               119     TXD     BIT     0B0H.1
+  00D5               120     F0      BIT     0D0H.5
+  00D1               121     F1      BIT     0D0H.1
+  00D0               122     PSW     DATA    0D0H
+                     123     ?PR?OSSched?CPU_ASM  SEGMENT CODE 
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     3
+
+                     124     ?PR?Timer0ISR?CPU_ASM                    SEGMENT CODE 
+                     125             EXTRN   CODE (SPPoint)
+                     126             EXTRN   DATA (TEMP_SP)
+                     127             EXTRN   CODE (TickIntHook)
+                     128             EXTRN   DATA (TCB)
+                     129             EXTRN   DATA (OSPrioCur)
+                     130             EXTRN   DATA (OSPrioHighRdy)
+                     131             EXTRN   CODE (?C?CSTPTR)
+                     132             EXTRN   CODE (?C?CLDPTR)
+                     133             PUBLIC  Timer0ISR
+                     134             PUBLIC  OSSched
+                     135     ; /****************************************************************************************
+                             *  
+                     136     ;  *  8051 CPUÏà¹ØASMÎÄ¼þ
+                     137     ;  * 
+                     138     ;  *  Copyright (C) 2010  Ô·³¼Ã¢ 
+                     139     ;  * 
+                     140     ;  *  2010-07-09  RaysRTOS 
+                     141     ;  ****************************************************************************************
+                             */
+                     142     ; 
+                     143     ; 
+                     144     ; #include "RaySRTOS.h"
+                     145     ; /*
+                     146     ; +---------------------------------------------------------------------------------------+
+                     147     ; |º¯ÊÃû³Æ£º    OSSched                                                                    
+                                                                                                  |
+                     148     ; |---------------------------------------------------------------------------------------|
+                     149     ; |º¯ÊÔ­ÐÍ£º    void OSSched(prio)                                                         
+                                                                                          |
+                     150     ; |                                                                                        
+                                                                                                                  |
+                     151     ; |º¯Ê¹¦ÄÜ£º    ÈÎÎñ¼¶ÇÐ»»º¯Ê                                                              
+                                                                                          |                             
+                                                                                                                        
+                                                                                    |
+                     152     ; +---------------------------------------------------------------------------------------+
+                     153     ; */
+                     154     ; void OSSched(void)
+                     155     
+----                 156             RSEG  ?PR?OSSched?CPU_ASM
+0000                 157     OSSched:
+                     158             USING   0
+                     159                             ; SOURCE LINE # 20
+                     160     ; {
+                     161                             ; SOURCE LINE # 21
+                     162     ;  OS_ENTER_CRITICAL();                //¹ØÖÐ¶Ï
+                     163                             ; SOURCE LINE # 22
+0000 C2AF            164             CLR     EA
+                     165     ;                                                
+                     166     ;       if(OSPrioHighRdy != OSPrioCur)                  /* Èç¹û²»ÊÇµ±Ç°ÔËÐÐµÄÈÎÎñ£¬½øÐÐÈÎÎñ
+                             µ÷¶È */
+                     167                             ; SOURCE LINE # 24
+0002 E500     F      168             MOV     A,OSPrioHighRdy
+0004 6500     F      169             XRL     A,OSPrioCur
+0006 6053            170             JZ      ?C0001
+                     171     ;       {
+                     172                             ; SOURCE LINE # 25
+                     173     ;               __asm PUSH ACC       //±£»¤µ±Ç°ÈÎÎñ¼Ä´æÆ÷
+0008 C0E0            174              PUSH ACC        
+                     175     ;               __asm PUSH B
+000A C0F0            176              PUSH B
+                     177     ;               __asm PUSH DPH
+000C C083            178              PUSH DPH
+                     179     ;               __asm PUSH DPL
+000E C082            180              PUSH DPL
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     4
+
+                     181     ;               __asm PUSH PSW
+0010 C0D0            182              PUSH PSW
+                     183     ;               __asm PUSH AR0       //0-7Îª¹¤×÷¼Ä´æÆ÷
+0012 C000            184              PUSH AR0             
+                     185     ;               __asm PUSH AR1
+0014 C001            186              PUSH AR1
+                     187     ;               __asm PUSH AR2
+0016 C002            188              PUSH AR2
+                     189     ;               __asm PUSH AR3
+0018 C003            190              PUSH AR3
+                     191     ;               __asm PUSH AR4
+001A C004            192              PUSH AR4
+                     193     ;               __asm PUSH AR5
+001C C005            194              PUSH AR5
+                     195     ;               __asm PUSH AR6
+001E C006            196              PUSH AR6
+                     197     ;               __asm PUSH AR7   
+0020 C007            198              PUSH AR7   
+                     199     ; // TCB[OSPrioCur].OSTCBStkPtr=SP;     //±£´æµ±Ç°¶ÑÕ»Ö¸Õë
+                     200     ;  SPPoint();
+                     201                             ; SOURCE LINE # 40
+0022 120000   F      202             LCALL   SPPoint
+                     203     ;  *TEMP_SP=SP;
+                     204                             ; SOURCE LINE # 41
+0025 AB00     F      205             MOV     R3,TEMP_SP
+0027 AA00     F      206             MOV     R2,TEMP_SP+01H
+0029 A900     F      207             MOV     R1,TEMP_SP+02H
+002B E581            208             MOV     A,SP
+002D 120000   F      209             LCALL   ?C?CSTPTR
+                     210     ;  OSPrioCur = OSPrioHighRdy;                   // ¸üÐÂOSPrioCur
+                     211                             ; SOURCE LINE # 42
+0030 850000   F      212             MOV     OSPrioCur,OSPrioHighRdy
+                     213     ;  SPPoint();
+                     214                             ; SOURCE LINE # 43
+0033 120000   F      215             LCALL   SPPoint
+                     216     ;  SP=*TEMP_SP;
+                     217                             ; SOURCE LINE # 44
+0036 AB00     F      218             MOV     R3,TEMP_SP
+0038 AA00     F      219             MOV     R2,TEMP_SP+01H
+003A A900     F      220             MOV     R1,TEMP_SP+02H
+003C 120000   F      221             LCALL   ?C?CLDPTR
+003F F581            222             MOV     SP,A
+                     223     ; // SP=TCB[OSPrioCur].OSTCBStkPtr;     //ÈÎÎñ¶ÑÕ»Ö¸ÕëÇÐ»»
+                     224     ;               __asm POP AR7                   //»Ö¸´ÈÎÎñ¼Ä´æÆ÷
+0041 D007            225              POP AR7                         
+                     226     ;               __asm POP AR6
+0043 D006            227              POP AR6
+                     228     ;               __asm POP AR5
+0045 D005            229              POP AR5
+                     230     ;               __asm POP AR4
+0047 D004            231              POP AR4
+                     232     ;               __asm POP AR3
+0049 D003            233              POP AR3
+                     234     ;               __asm POP AR2
+004B D002            235              POP AR2
+                     236     ;               __asm POP AR1
+004D D001            237              POP AR1
+                     238     ;               __asm POP AR0
+004F D000            239              POP AR0
+                     240     ;               __asm POP PSW
+0051 D0D0            241              POP PSW
+                     242     ;               __asm POP DPL
+0053 D082            243              POP DPL
+                     244     ;               __asm POP DPH
+0055 D083            245              POP DPH
+                     246     ;               __asm POP B
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     5
+
+0057 D0F0            247              POP B
+                     248     ;               __asm POP ACC
+0059 D0E0            249              POP ACC
+                     250     ;       }
+                     251                             ; SOURCE LINE # 59
+005B                 252     ?C0001:
+                     253     ;  OS_EXIT_CRITICAL();      //¿ªÖÐ¶Ï
+                     254                             ; SOURCE LINE # 60
+005B D2AF            255             SETB    EA
+                     256     ; }
+                     257                             ; SOURCE LINE # 61
+005D 22              258             RET     
+                     259     ; END OF OSSched
+                     260     
+----                 261     CSEG    AT      0000BH
+000B 020000   F      262             LJMP    Timer0ISR
+                     263     
+                     264     ; 
+                     265     ; /*
+                     266     ; +---------------------------------------------------------------------------------------+
+                     267     ; |º¯ÊÃû³Æ£º    Timer0ISR                                                                  
+                                                                                                  |
+                     268     ; |---------------------------------------------------------------------------------------|
+                     269     ; |º¯ÊÔ­ÐÍ£º    void Timer0ISR(prio)                                                       
+                                                                                  |
+                     270     ; |                                                                                        
+                                                                                                                  |
+                     271     ; |º¯Ê¹¦ÄÜ£º    ÖÐ¶Ï¼¶ÇÐ»»º¯Ê                                                              
+                                                                                          |                             
+                                                                                                                        
+                                                                                    |
+                     272     ; +---------------------------------------------------------------------------------------+
+                     273     ; */
+                     274     ; void Timer0ISR(void) interrupt 1 using 0
+                     275     
+----                 276             RSEG  ?PR?Timer0ISR?CPU_ASM
+                     277             USING   0
+0000                 278     Timer0ISR:
+0000 C0E0            279             PUSH    ACC
+0002 C0F0            280             PUSH    B
+0004 C083            281             PUSH    DPH
+0006 C082            282             PUSH    DPL
+0008 C0D0            283             PUSH    PSW
+                     284             USING   0
+000A 75D000          285             MOV     PSW,#00H
+                     286                             ; SOURCE LINE # 72
+                     287     ; {
+                     288     ;     OS_ENTER_CRITICAL();            //¹ØÖÐ¶Ï
+                     289                             ; SOURCE LINE # 74
+000D C2AF            290             CLR     EA
+                     291     ;     TH0=0xfe;
+                     292                             ; SOURCE LINE # 75
+000F 758CFE          293             MOV     TH0,#0FEH
+                     294     ;     TL0=0x00;
+                     295                             ; SOURCE LINE # 76
+0012 758A00          296             MOV     TL0,#00H
+                     297     ;       TR0=0;
+                     298                             ; SOURCE LINE # 77
+0015 C28C            299             CLR     TR0
+                     300     ;  __asm PUSH AR0
+0017 C000            301              PUSH AR0
+                     302     ;  __asm PUSH AR1
+0019 C001            303              PUSH AR1
+                     304     ;  __asm PUSH AR2
+001B C002            305              PUSH AR2
+                     306     ;  __asm PUSH AR3
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     6
+
+001D C003            307              PUSH AR3
+                     308     ;  __asm PUSH AR4
+001F C004            309              PUSH AR4
+                     310     ;  __asm PUSH AR5
+0021 C005            311              PUSH AR5
+                     312     ;  __asm PUSH AR6
+0023 C006            313              PUSH AR6
+                     314     ;  __asm PUSH AR7
+0025 C007            315              PUSH AR7
+                     316     ; 
+                     317     ;  TickIntHook();
+                     318                             ; SOURCE LINE # 87
+0027 120000   F      319             LCALL   TickIntHook
+                     320     ;   TCB[OSPrioCur].OSTCBStkPtr=SP;   //±£´æµ±Ç°¶ÑÕ»Ö¸Õë
+                     321                             ; SOURCE LINE # 88
+002A E500     F      322             MOV     A,OSPrioCur
+002C 75F003          323             MOV     B,#03H
+002F A4              324             MUL     AB
+0030 2400     F      325             ADD     A,#LOW (TCB)
+0032 F8              326             MOV     R0,A
+0033 A681            327             MOV     @R0,SP
+                     328     ;   OSPrioCur = OSPrioHighRdy; // ¸üÐÂOSPrioCur 
+                     329                             ; SOURCE LINE # 89
+0035 850000   F      330             MOV     OSPrioCur,OSPrioHighRdy
+                     331     ;   SP=TCB[OSPrioCur].OSTCBStkPtr;   //ÈÎÎñ¶ÑÕ»Ö¸ÕëÇÐ»»
+                     332                             ; SOURCE LINE # 90
+0038 E500     F      333             MOV     A,OSPrioCur
+003A 75F003          334             MOV     B,#03H
+003D A4              335             MUL     AB
+003E 2400     F      336             ADD     A,#LOW (TCB)
+0040 F8              337             MOV     R0,A
+0041 E6              338             MOV     A,@R0
+0042 F581            339             MOV     SP,A
+                     340     ; 
+                     341     ;  __asm POP AR7
+0044 D007            342              POP AR7
+                     343     ;  __asm POP AR6
+0046 D006            344              POP AR6
+                     345     ;  __asm POP AR5
+0048 D005            346              POP AR5
+                     347     ;  __asm POP AR4
+004A D004            348              POP AR4
+                     349     ;  __asm POP AR3
+004C D003            350              POP AR3
+                     351     ;  __asm POP AR2
+004E D002            352              POP AR2
+                     353     ;  __asm POP AR1
+0050 D001            354              POP AR1
+                     355     ;  __asm POP AR0
+0052 D000            356              POP AR0
+                     357     ;  TR0=1;
+                     358                             ; SOURCE LINE # 100
+0054 D28C            359             SETB    TR0
+                     360     ;  OS_EXIT_CRITICAL();              //¿ªÖÐ¶Ï
+                     361                             ; SOURCE LINE # 101
+0056 D2AF            362             SETB    EA
+                     363     ; }
+                     364                             ; SOURCE LINE # 102
+0058 D0D0            365             POP     PSW
+005A D082            366             POP     DPL
+005C D083            367             POP     DPH
+005E D0F0            368             POP     B
+0060 D0E0            369             POP     ACC
+0062 32              370             RETI    
+                     371     ; END OF Timer0ISR
+                     372     
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     7
+
+                     373             END
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     8
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                T Y P E  V A L U E   ATTRIBUTES
+
+?C0001. . . . . . . .  C ADDR   005BH   R   SEG=?PR?OSSCHED?CPU_ASM
+?C?CLDPTR . . . . . .  C ADDR   -----       EXT
+?C?CSTPTR . . . . . .  C ADDR   -----       EXT
+?PR?OSSCHED?CPU_ASM .  C SEG    005EH       REL=UNIT
+?PR?TIMER0ISR?CPU_ASM  C SEG    0063H       REL=UNIT
+AC. . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC . . . . . . . . .  D ADDR   00E0H   A   
+AR0 . . . . . . . . .  D ADDR   0000H   A   
+AR1 . . . . . . . . .  D ADDR   0001H   A   
+AR2 . . . . . . . . .  D ADDR   0002H   A   
+AR3 . . . . . . . . .  D ADDR   0003H   A   
+AR4 . . . . . . . . .  D ADDR   0004H   A   
+AR5 . . . . . . . . .  D ADDR   0005H   A   
+AR6 . . . . . . . . .  D ADDR   0006H   A   
+AR7 . . . . . . . . .  D ADDR   0007H   A   
+B . . . . . . . . . .  D ADDR   00F0H   A   
+CPU_ASM . . . . . . .  N NUMB   -----       
+CP_RL2. . . . . . . .  B ADDR   00C8H.0 A   
+CY. . . . . . . . . .  B ADDR   00D0H.7 A   
+C_T2. . . . . . . . .  B ADDR   00C8H.1 A   
+DPH . . . . . . . . .  D ADDR   0083H   A   
+DPL . . . . . . . . .  D ADDR   0082H   A   
+EA. . . . . . . . . .  B ADDR   00A8H.7 A   
+ES. . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0 . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1 . . . . . . . . .  B ADDR   00A8H.3 A   
+ET2 . . . . . . . . .  B ADDR   00A8H.5 A   
+EX0 . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1 . . . . . . . . .  B ADDR   00A8H.2 A   
+EXEN2 . . . . . . . .  B ADDR   00C8H.3 A   
+EXF2. . . . . . . . .  B ADDR   00C8H.6 A   
+F0. . . . . . . . . .  B ADDR   00D0H.5 A   
+F1. . . . . . . . . .  B ADDR   00D0H.1 A   
+IE. . . . . . . . . .  D ADDR   00A8H   A   
+IE0 . . . . . . . . .  B ADDR   0088H.1 A   
+IE1 . . . . . . . . .  B ADDR   0088H.3 A   
+INT0. . . . . . . . .  B ADDR   00B0H.2 A   
+INT1. . . . . . . . .  B ADDR   00B0H.3 A   
+IP. . . . . . . . . .  D ADDR   00B8H   A   
+IT0 . . . . . . . . .  B ADDR   0088H.0 A   
+IT1 . . . . . . . . .  B ADDR   0088H.2 A   
+OSPRIOCUR . . . . . .  D ADDR   -----       EXT
+OSPRIOHIGHRDY . . . .  D ADDR   -----       EXT
+OSSCHED . . . . . . .  C ADDR   0000H   R   SEG=?PR?OSSCHED?CPU_ASM
+OV. . . . . . . . . .  B ADDR   00D0H.2 A   
+P . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0. . . . . . . . . .  D ADDR   0080H   A   
+P0_0. . . . . . . . .  B ADDR   0080H.0 A   
+P0_1. . . . . . . . .  B ADDR   0080H.1 A   
+P0_2. . . . . . . . .  B ADDR   0080H.2 A   
+P0_3. . . . . . . . .  B ADDR   0080H.3 A   
+P0_4. . . . . . . . .  B ADDR   0080H.4 A   
+P0_5. . . . . . . . .  B ADDR   0080H.5 A   
+P0_6. . . . . . . . .  B ADDR   0080H.6 A   
+P0_7. . . . . . . . .  B ADDR   0080H.7 A   
+P1. . . . . . . . . .  D ADDR   0090H   A   
+P1_0. . . . . . . . .  B ADDR   0090H.0 A   
+P1_1. . . . . . . . .  B ADDR   0090H.1 A   
+P1_2. . . . . . . . .  B ADDR   0090H.2 A   
+P1_3. . . . . . . . .  B ADDR   0090H.3 A   
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE     9
+
+P1_4. . . . . . . . .  B ADDR   0090H.4 A   
+P1_5. . . . . . . . .  B ADDR   0090H.5 A   
+P1_6. . . . . . . . .  B ADDR   0090H.6 A   
+P1_7. . . . . . . . .  B ADDR   0090H.7 A   
+P2. . . . . . . . . .  D ADDR   00A0H   A   
+P2_0. . . . . . . . .  B ADDR   00A0H.0 A   
+P2_1. . . . . . . . .  B ADDR   00A0H.1 A   
+P2_2. . . . . . . . .  B ADDR   00A0H.2 A   
+P2_3. . . . . . . . .  B ADDR   00A0H.3 A   
+P2_4. . . . . . . . .  B ADDR   00A0H.4 A   
+P2_5. . . . . . . . .  B ADDR   00A0H.5 A   
+P2_6. . . . . . . . .  B ADDR   00A0H.6 A   
+P2_7. . . . . . . . .  B ADDR   00A0H.7 A   
+P3. . . . . . . . . .  D ADDR   00B0H   A   
+P3_0. . . . . . . . .  B ADDR   00B0H.0 A   
+P3_1. . . . . . . . .  B ADDR   00B0H.1 A   
+P3_2. . . . . . . . .  B ADDR   00B0H.2 A   
+P3_3. . . . . . . . .  B ADDR   00B0H.3 A   
+P3_4. . . . . . . . .  B ADDR   00B0H.4 A   
+P3_5. . . . . . . . .  B ADDR   00B0H.5 A   
+P3_6. . . . . . . . .  B ADDR   00B0H.6 A   
+P3_7. . . . . . . . .  B ADDR   00B0H.7 A   
+PCON. . . . . . . . .  D ADDR   0087H   A   
+PS. . . . . . . . . .  B ADDR   00B8H.4 A   
+PSW . . . . . . . . .  D ADDR   00D0H   A   
+PT0 . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1 . . . . . . . . .  B ADDR   00B8H.3 A   
+PT2 . . . . . . . . .  B ADDR   00B8H.5 A   
+PX0 . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1 . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8 . . . . . . . . .  B ADDR   0098H.2 A   
+RCAP2H. . . . . . . .  D ADDR   00CBH   A   
+RCAP2L. . . . . . . .  D ADDR   00CAH   A   
+RCLK. . . . . . . . .  B ADDR   00C8H.5 A   
+RD. . . . . . . . . .  B ADDR   00B0H.7 A   
+REN . . . . . . . . .  B ADDR   0098H.4 A   
+RI. . . . . . . . . .  B ADDR   0098H.0 A   
+RS0 . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1 . . . . . . . . .  B ADDR   00D0H.4 A   
+RXD . . . . . . . . .  B ADDR   00B0H.0 A   
+SBUF. . . . . . . . .  D ADDR   0099H   A   
+SCON. . . . . . . . .  D ADDR   0098H   A   
+SM0 . . . . . . . . .  B ADDR   0098H.7 A   
+SM1 . . . . . . . . .  B ADDR   0098H.6 A   
+SM2 . . . . . . . . .  B ADDR   0098H.5 A   
+SP. . . . . . . . . .  D ADDR   0081H   A   
+SPPOINT . . . . . . .  C ADDR   -----       EXT
+T0. . . . . . . . . .  B ADDR   00B0H.4 A   
+T1. . . . . . . . . .  B ADDR   00B0H.5 A   
+T2. . . . . . . . . .  B ADDR   0090H.0 A   
+T2CON . . . . . . . .  D ADDR   00C8H   A   
+T2EX. . . . . . . . .  B ADDR   0090H.1 A   
+T2MOD . . . . . . . .  D ADDR   00C9H   A   
+TB8 . . . . . . . . .  B ADDR   0098H.3 A   
+TCB . . . . . . . . .  D ADDR   -----       EXT
+TCLK. . . . . . . . .  B ADDR   00C8H.4 A   
+TCON. . . . . . . . .  D ADDR   0088H   A   
+TEMP_SP . . . . . . .  D ADDR   -----       EXT
+TF0 . . . . . . . . .  B ADDR   0088H.5 A   
+TF1 . . . . . . . . .  B ADDR   0088H.7 A   
+TF2 . . . . . . . . .  B ADDR   00C8H.7 A   
+TH0 . . . . . . . . .  D ADDR   008CH   A   
+TH1 . . . . . . . . .  D ADDR   008DH   A   
+TH2 . . . . . . . . .  D ADDR   00CDH   A   
+TI. . . . . . . . . .  B ADDR   0098H.1 A   
+TICKINTHOOK . . . . .  C ADDR   -----       EXT
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/20/2010 21:15:53 PAGE    10
+
+TIMER0ISR . . . . . .  C ADDR   0000H   R   SEG=?PR?TIMER0ISR?CPU_ASM
+TL0 . . . . . . . . .  D ADDR   008AH   A   
+TL1 . . . . . . . . .  D ADDR   008BH   A   
+TL2 . . . . . . . . .  D ADDR   00CCH   A   
+TMOD. . . . . . . . .  D ADDR   0089H   A   
+TR0 . . . . . . . . .  B ADDR   0088H.4 A   
+TR1 . . . . . . . . .  B ADDR   0088H.6 A   
+TR2 . . . . . . . . .  B ADDR   00C8H.2 A   
+TXD . . . . . . . . .  B ADDR   00B0H.1 A   
+WR. . . . . . . . . .  B ADDR   00B0H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

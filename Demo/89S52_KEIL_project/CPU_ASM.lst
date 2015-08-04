@@ -1,0 +1,297 @@
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/22/2010 14:00:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.01
+OBJECT MODULE PLACED IN .\output\CPU_ASM.obj
+ASSEMBLER INVOKED BY: D:\Program Files\KEIL\C51\BIN\A51.EXE ..\..\CPU\8051_KEIL\CPU_ASM.asm SET(SMALL) DEBUG PRINT(.\CPU
+                      _ASM.lst) OBJECT(.\output\CPU_ASM.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; /****************************************************************************************
+                             *  
+                       2     ;  *  8051 CPUÏà¹ØASMÎÄ¼þ
+                       3     ;  * 
+                       4     ;  *  Copyright (C) 2010  Ô·³¼Ã¢ 
+                       5     ;  * 
+                       6     ;  *  2010-07-09  RaysRTOS 
+                       7     ;  ****************************************************************************************
+                             */
+                       8     $nomod51 
+                       9     ;#include "REG52.INC"
+                +1    10     ;-------------------------------------------------------------------------------
+                +1    11     ; Copyright 1995-1996 KEIL Software, Inc.
+                +1    12     ; 8052 Processor Declarations
+                +1    13     ;-------------------------------------------------------------------------------
+                +1    14  +1 $save 
+                +1   115  +1 $restore 
+                +1   116     
+                     117     
+                     118     
+                     119     NAME    CPU_ASM
+                     120     
+                     121     
+                     122     ?PR?OSSched?CPU_ASM    SEGMENT CODE 
+                     123     ?PR?Timer0ISR?CPU_ASM  SEGMENT CODE 
+                     124     
+                     125             EXTRN   CODE (TickIntHook)
+                     126             EXTRN   DATA (TCB)
+                     127             EXTRN   DATA (OSPrioCur)
+                     128             EXTRN   DATA (OSPrioHighRdy)
+                     129     
+                     130             PUBLIC  Timer0ISR
+                     131             PUBLIC  OSSched
+                     132     
+----                 133             RSEG  ?PR?OSSched?CPU_ASM
+0000                 134     OSSched:
+                     135             USING   0
+0000 C2AF            136             CLR     EA
+0002 E500     F      137             MOV     A,OSPrioHighRdy
+0004 6500     F      138             XRL     A,OSPrioCur
+0006 604E            139             JZ      ?C0001
+0008 C0E0            140              PUSH ACC        
+000A C0F0            141              PUSH B
+000C C083            142              PUSH DPH
+000E C082            143              PUSH DPL
+0010 C0D0            144              PUSH PSW
+0012 C000            145              PUSH AR0             
+0014 C001            146              PUSH AR1
+0016 C002            147              PUSH AR2
+0018 C003            148              PUSH AR3
+001A C004            149              PUSH AR4
+001C C005            150              PUSH AR5
+001E C006            151              PUSH AR6   
+0020 C007            152              PUSH AR7   
+                     153     
+0022 E500     F      154             MOV     A,OSPrioCur
+0024 75F003          155             MOV     B,#03H
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/22/2010 14:00:49 PAGE     2
+
+0027 A4              156             MUL     AB
+0028 2400     F      157             ADD     A,#LOW (TCB)
+002A F8              158             MOV     R0,A
+002B A681            159             MOV     @R0,SP
+                     160     
+002D 850000   F      161             MOV     OSPrioCur,OSPrioHighRdy
+                     162     
+0030 E500     F      163             MOV     A,OSPrioCur
+0032 75F003          164             MOV     B,#03H
+0035 A4              165             MUL     AB
+0036 2400     F      166             ADD     A,#LOW (TCB)
+0038 F8              167             MOV     R0,A
+0039 E6              168             MOV     A,@R0
+003A F581            169             MOV     SP,A
+003C D007            170              POP AR7
+003E D006            171              POP AR6
+0040 D005            172              POP AR5
+0042 D004            173              POP AR4
+0044 D003            174              POP AR3
+0046 D002            175              POP AR2
+0048 D001            176              POP AR1
+004A D000            177              POP AR0
+004C D0D0            178              POP PSW
+004E D082            179              POP DPL
+0050 D083            180              POP DPH
+0052 D0F0            181              POP B
+0054 D0E0            182              POP ACC
+0056                 183     ?C0001:
+0056 D2AF            184             SETB    EA
+0058 22              185             RET 
+                     186     
+                     187     
+                     188     
+                     189     
+                     190     ; /*
+                     191     ; +---------------------------------------------------------------------------------------+
+                     192     ; |º¯ÊÃû³Æ£º    Timer0ISR                                                                  
+                                                                                                  |
+                     193     ; |---------------------------------------------------------------------------------------|
+                     194     ; |º¯ÊÔ­ÐÍ£º    void Timer0ISR(prio)                                                       
+                                                                                  |
+                     195     ; |                                                                                        
+                                                                                                                  |
+                     196     ; |º¯Ê¹¦ÄÜ£º    ÖÐ¶Ï¼¶ÇÐ»»º¯Ê                                                              
+                                                                                          |                             
+                                                                                                                        
+                                                                                    |
+                     197     ; +---------------------------------------------------------------------------------------+
+                     198     ; */
+                     199     
+----                 200     CSEG    AT      0000BH
+000B 020000   F      201             LJMP    Timer0ISR 
+                     202     
+----                 203             RSEG  ?PR?Timer0ISR?CPU_ASM
+                     204             USING   0
+0000                 205     Timer0ISR:
+0000 C0E0            206             PUSH    ACC
+0002 C0F0            207             PUSH    B
+0004 C083            208             PUSH    DPH
+0006 C082            209             PUSH    DPL
+0008 C0D0            210             PUSH    PSW
+                     211             USING   0
+000A 75D000          212             MOV     PSW,#00H
+000D C2AF            213             CLR     EA
+000F 758CFE          214             MOV     TH0,#0FEH
+0012 758A00          215             MOV     TL0,#00H
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/22/2010 14:00:49 PAGE     3
+
+0015 C28C            216             CLR     TR0
+                     217     
+0017 C000            218              PUSH AR0             
+0019 C001            219              PUSH AR1
+001B C002            220              PUSH AR2
+001D C003            221              PUSH AR3
+001F C004            222              PUSH AR4
+0021 C005            223              PUSH AR5
+0023 C006            224              PUSH AR6   
+0025 C007            225              PUSH AR7 
+0027 120000   F      226             LCALL   TickIntHook
+002A E500     F      227             MOV     A,OSPrioCur
+002C 75F003          228             MOV     B,#03H
+002F A4              229             MUL     AB
+0030 2400     F      230             ADD     A,#LOW (TCB)
+0032 F8              231             MOV     R0,A
+0033 A681            232             MOV     @R0,SP
+                     233     
+0035 850000   F      234             MOV     OSPrioCur,OSPrioHighRdy
+                     235     
+0038 E500     F      236             MOV     A,OSPrioCur
+003A 75F003          237             MOV     B,#03H
+003D A4              238             MUL     AB
+003E 2400     F      239             ADD     A,#LOW (TCB)
+0040 F8              240             MOV     R0,A
+0041 E6              241             MOV     A,@R0
+0042 F581            242             MOV     SP,A
+                     243     
+0044 D007            244              POP AR7
+0046 D006            245              POP AR6
+0048 D005            246              POP AR5
+004A D004            247              POP AR4
+004C D003            248              POP AR3
+004E D002            249              POP AR2
+0050 D001            250              POP AR1
+0052 D000            251              POP AR0
+0054 D28C            252             SETB    TR0
+0056 D2AF            253             SETB    EA
+0058 D0D0            254             POP     PSW
+005A D082            255             POP     DPL
+005C D083            256             POP     DPH
+005E D0F0            257             POP     B
+0060 D0E0            258             POP     ACC
+0062 32              259             RETI 
+                     260     
+                     261             END
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/22/2010 14:00:49 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                T Y P E  V A L U E   ATTRIBUTES
+
+?C0001. . . . . . . .  C ADDR   0056H   R   SEG=?PR?OSSCHED?CPU_ASM
+?PR?OSSCHED?CPU_ASM .  C SEG    0059H       REL=UNIT
+?PR?TIMER0ISR?CPU_ASM  C SEG    0063H       REL=UNIT
+AC. . . . . . . . . .  B ADDR   00D0H.6 A   
+ACC . . . . . . . . .  D ADDR   00E0H   A   
+AR0 . . . . . . . . .  D ADDR   0000H   A   
+AR1 . . . . . . . . .  D ADDR   0001H   A   
+AR2 . . . . . . . . .  D ADDR   0002H   A   
+AR3 . . . . . . . . .  D ADDR   0003H   A   
+AR4 . . . . . . . . .  D ADDR   0004H   A   
+AR5 . . . . . . . . .  D ADDR   0005H   A   
+AR6 . . . . . . . . .  D ADDR   0006H   A   
+AR7 . . . . . . . . .  D ADDR   0007H   A   
+B . . . . . . . . . .  D ADDR   00F0H   A   
+CPU_ASM . . . . . . .  N NUMB   -----       
+CP_RL2. . . . . . . .  B ADDR   00C8H.0 A   
+CY. . . . . . . . . .  B ADDR   00D0H.7 A   
+C_T2. . . . . . . . .  B ADDR   00C8H.1 A   
+DPH . . . . . . . . .  D ADDR   0083H   A   
+DPL . . . . . . . . .  D ADDR   0082H   A   
+EA. . . . . . . . . .  B ADDR   00A8H.7 A   
+ES. . . . . . . . . .  B ADDR   00A8H.4 A   
+ET0 . . . . . . . . .  B ADDR   00A8H.1 A   
+ET1 . . . . . . . . .  B ADDR   00A8H.3 A   
+ET2 . . . . . . . . .  B ADDR   00A8H.5 A   
+EX0 . . . . . . . . .  B ADDR   00A8H.0 A   
+EX1 . . . . . . . . .  B ADDR   00A8H.2 A   
+EXEN2 . . . . . . . .  B ADDR   00C8H.3 A   
+EXF2. . . . . . . . .  B ADDR   00C8H.6 A   
+F0. . . . . . . . . .  B ADDR   00D0H.5 A   
+IE. . . . . . . . . .  D ADDR   00A8H   A   
+IE0 . . . . . . . . .  B ADDR   0088H.1 A   
+IE1 . . . . . . . . .  B ADDR   0088H.3 A   
+INT0. . . . . . . . .  B ADDR   00B0H.2 A   
+INT1. . . . . . . . .  B ADDR   00B0H.3 A   
+IP. . . . . . . . . .  D ADDR   00B8H   A   
+IT0 . . . . . . . . .  B ADDR   0088H.0 A   
+IT1 . . . . . . . . .  B ADDR   0088H.2 A   
+OSPRIOCUR . . . . . .  D ADDR   -----       EXT
+OSPRIOHIGHRDY . . . .  D ADDR   -----       EXT
+OSSCHED . . . . . . .  C ADDR   0000H   R   SEG=?PR?OSSCHED?CPU_ASM
+OV. . . . . . . . . .  B ADDR   00D0H.2 A   
+P . . . . . . . . . .  B ADDR   00D0H.0 A   
+P0. . . . . . . . . .  D ADDR   0080H   A   
+P1. . . . . . . . . .  D ADDR   0090H   A   
+P2. . . . . . . . . .  D ADDR   00A0H   A   
+P3. . . . . . . . . .  D ADDR   00B0H   A   
+PCON. . . . . . . . .  D ADDR   0087H   A   
+PS. . . . . . . . . .  B ADDR   00B8H.4 A   
+PSW . . . . . . . . .  D ADDR   00D0H   A   
+PT0 . . . . . . . . .  B ADDR   00B8H.1 A   
+PT1 . . . . . . . . .  B ADDR   00B8H.3 A   
+PT2 . . . . . . . . .  B ADDR   00B8H.5 A   
+PX0 . . . . . . . . .  B ADDR   00B8H.0 A   
+PX1 . . . . . . . . .  B ADDR   00B8H.2 A   
+RB8 . . . . . . . . .  B ADDR   0098H.2 A   
+RCAP2H. . . . . . . .  D ADDR   00CBH   A   
+RCAP2L. . . . . . . .  D ADDR   00CAH   A   
+RCLK. . . . . . . . .  B ADDR   00C8H.5 A   
+RD. . . . . . . . . .  B ADDR   00B0H.7 A   
+A51 MACRO ASSEMBLER  CPU_ASM                                                              10/22/2010 14:00:49 PAGE     5
+
+REN . . . . . . . . .  B ADDR   0098H.4 A   
+RI. . . . . . . . . .  B ADDR   0098H.0 A   
+RS0 . . . . . . . . .  B ADDR   00D0H.3 A   
+RS1 . . . . . . . . .  B ADDR   00D0H.4 A   
+RXD . . . . . . . . .  B ADDR   00B0H.0 A   
+SBUF. . . . . . . . .  D ADDR   0099H   A   
+SCON. . . . . . . . .  D ADDR   0098H   A   
+SM0 . . . . . . . . .  B ADDR   0098H.7 A   
+SM1 . . . . . . . . .  B ADDR   0098H.6 A   
+SM2 . . . . . . . . .  B ADDR   0098H.5 A   
+SP. . . . . . . . . .  D ADDR   0081H   A   
+T0. . . . . . . . . .  B ADDR   00B0H.4 A   
+T1. . . . . . . . . .  B ADDR   00B0H.5 A   
+T2. . . . . . . . . .  B ADDR   0090H.0 A   
+T2CON . . . . . . . .  D ADDR   00C8H   A   
+T2EX. . . . . . . . .  B ADDR   0090H.1 A   
+TB8 . . . . . . . . .  B ADDR   0098H.3 A   
+TCB . . . . . . . . .  D ADDR   -----       EXT
+TCLK. . . . . . . . .  B ADDR   00C8H.4 A   
+TCON. . . . . . . . .  D ADDR   0088H   A   
+TF0 . . . . . . . . .  B ADDR   0088H.5 A   
+TF1 . . . . . . . . .  B ADDR   0088H.7 A   
+TF2 . . . . . . . . .  B ADDR   00C8H.7 A   
+TH0 . . . . . . . . .  D ADDR   008CH   A   
+TH1 . . . . . . . . .  D ADDR   008DH   A   
+TH2 . . . . . . . . .  D ADDR   00CDH   A   
+TI. . . . . . . . . .  B ADDR   0098H.1 A   
+TICKINTHOOK . . . . .  C ADDR   -----       EXT
+TIMER0ISR . . . . . .  C ADDR   0000H   R   SEG=?PR?TIMER0ISR?CPU_ASM
+TL0 . . . . . . . . .  D ADDR   008AH   A   
+TL1 . . . . . . . . .  D ADDR   008BH   A   
+TL2 . . . . . . . . .  D ADDR   00CCH   A   
+TMOD. . . . . . . . .  D ADDR   0089H   A   
+TR0 . . . . . . . . .  B ADDR   0088H.4 A   
+TR1 . . . . . . . . .  B ADDR   0088H.6 A   
+TR2 . . . . . . . . .  B ADDR   00C8H.2 A   
+TXD . . . . . . . . .  B ADDR   00B0H.1 A   
+WR. . . . . . . . . .  B ADDR   00B0H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,89 @@
+C51 COMPILER V9.00   MAIN                                                                  10/22/2010 14:00:49 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\output\main.obj
+COMPILER INVOKED BY: D:\Program Files\KEIL\C51\BIN\C51.EXE main.c BROWSE INCDIR(..\..\CPU\8051_KEIL;..\..\Kernel) DEBUG 
+                    -OBJECTEXTEND OBJECT(.\output\main.obj)
+
+line level    source
+
+   1          
+   2          #include "RaySRTOS.h"
+   3          #include "math.h"
+   4          
+   5          /******************定义任务的堆栈***************/
+   6          INT8U Task0Stack[20];
+   7          INT8U Task1Stack[20];
+   8          INT8U Task2Stack[20];
+   9          /******************系统节拍初始化***************/
+  10                   void TimerInit(void)
+  11          {
+  12   1              TMOD=0x01;
+  13   1          TH0=0xf9;
+  14   1          TL0=0xfe;
+  15   1          EA=1;
+  16   1          ET0=1;
+  17   1      }
+  18          /******************任务Task0定义***************/
+  19          void Task0(void)
+  20          {
+  21   1       INT8U asi=0;
+  22   1       TimerInit();
+  23   1       
+  24   1       while(1)
+  25   1       {
+  26   2         P0++;
+  27   2         RAYS_TimeDelay(3000);
+  28   2       }
+  29   1      }
+  30          /******************任务Task1定义***************/
+  31          void Task1(void)
+  32          {
+  33   1      
+  34   1       while(1)
+  35   1       {
+  36   2         P1++;
+  37   2         RAYS_TimeDelay(40);
+  38   2      
+  39   2       }
+  40   1      }
+  41          
+  42          /******************任务Task2定义***************/
+  43          void Task2(void)
+  44          {
+  45   1      
+  46   1       while(1)
+  47   1       {
+  48   2         P2++;
+  49   2         RAYS_TimeDelay(40);
+  50   2      
+  51   2       }
+  52   1      }
+  53          
+  54          /****************主函数***************/
+C51 COMPILER V9.00   MAIN                                                                  10/22/2010 14:00:49 PAGE 2   
+
+  55          int main(void)
+  56          {
+  57   1               RAYS_Init();
+  58   1               RAYS_TaskCreate(Task0,Task0Stack,0);
+  59   1               RAYS_TaskCreate(Task1,Task1Stack,1);
+  60   1               RAYS_TaskCreate(Task2,Task2Stack,2);    
+  61   1               RAYS_Start();   //此函数执行完系统即发生调度
+  62   1               while(1);
+  63   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    124    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     60       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
