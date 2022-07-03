@@ -24,12 +24,14 @@ typedef unsigned int   TICKS_TypeDef;
 +---------------------------------------------------------------------------------------*/
 #define StackSizeIdle     50	      // 定义空闲任务栈大小                 
 #define OS_TICKS_PER_SEC  100         // 设置一秒内的时钟节拍数             
-#define OS_TASKS	  3	      // 设定运行任务的数量,不包含空闲任务  
-
+#define OS_TASKS	  4	      // 设定运行任务的数量,不包含空闲任务  
+#define  TASK_SUSPEND_EN 1
 /*--------------------------------------------------------------------------------------+
 |平台代码										|
 +---------------------------------------------------------------------------------------*/
-#include "iostm8l152c6.h"
+#include "stm8s.h"
+#include "stm8s_tim1.h"
+#include "stm8s_tim2.h"
 #include <inttypes.h>
 #include <stdio.h>
 
@@ -63,3 +65,8 @@ extern  INT16U *TEMP_SP;
 void CPU_TaskCreate(void (*p_Task)(void),STACK_TypeDef *p_Stack,PRIO_TypeDef Prio);
 void CPU_OSStart(void);
 void SPPoint(void);
+//定义CPU内部时钟
+#define  SYS_CLOCK    16
+void CLOCK_Config(u8 q);
+void delay_ms(unsigned int time);
+void delay_us(void);

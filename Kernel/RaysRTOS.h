@@ -17,7 +17,7 @@ void RAYS_Start(void);					//系统启动函数
 
 #if(TASK_SUSPEND_EN==1)
 void RAYS_TaskResume(PRIO_TypeDef Prio);	 	//任务恢复函数
-void RAYS_TaskSuspend(PIRO_TypeDef Prio);		//任务挂起函数
+void RAYS_TaskSuspend(PRIO_TypeDef Prio);		//任务挂起函数
 #endif
 
 void OSSched(void);						//汇编调度函数

@@ -1,8 +1,8 @@
-/*****************************************************************************************  
- *  RaysRTOS核心文件 
- * 
- *  Copyright (C) 2010  苑臣芒 
- * 
+/*****************************************************************************************
+ *  RaysRTOS核心文件
+ *
+ *  Copyright (C) 2010  苑臣芒
+ *
  *  2010-07-09  RaysRTOS 核心函数
  *****************************************************************************************/
 #include "RaysRTOS.h"
@@ -19,22 +19,22 @@
 #define OSSetPrioRdy(Prio)    \
     {                         \
     OSRdyTbl |= 0x01<<Prio;   \
-    }		                                          
+    }
 /*
 +---------------------------------------------------------------------------------------+
-|函数名称：	OSDelPrioRdy																|
+|函数名称： OSDelPrioRdy                                                                |
 |---------------------------------------------------------------------------------------|
-|函数原型：	void OSDelPrioRdy(prio)														|
-|																						|
-|函数功能：	任务删除 															   		|
-|																						|
-|入口参数：	prio 任务优先级														   		|
+|函数原型： void OSDelPrioRdy(prio)                                                     |
+|                                                                                       |
+|函数功能： 任务删除                                                                    |
+|                                                                                       |
+|入口参数： prio 任务优先级                                                             |
 +---------------------------------------------------------------------------------------+
-*/							          
+*/
 #define OSDelPrioRdy(Prio)    \
     {                         \
     OSRdyTbl &= ~(0x01<<Prio);\
-	}												   
+    }
 /*
 +---------------------------------------------------------------------------------------+
 |函数名称:  RAYS_TaskCreate                                                             |
@@ -44,12 +44,11 @@
 |入口参数:  *Task：任务函数地址；*Stack：任务栈顶指针；Prio:任务优先级                  |
 +---------------------------------------------------------------------------------------+
 */
-void RAYS_TaskCreate(void (*p_Task)(void),STACK_TypeDef *p_Stack,PRIO_TypeDef Prio)
+void RAYS_TaskCreate(void (*p_Task)(void), STACK_TypeDef *p_Stack, PRIO_TypeDef Prio)
 {
-    if(Prio <= OS_TASKS)
-    {
-        CPU_TaskCreate(p_Task,p_Stack,Prio);  //具体平台任务创建函数  	
-        OSSetPrioRdy(Prio);      			  // 在任务就绪表中登记	
+    if (Prio <= OS_TASKS) {
+        CPU_TaskCreate(p_Task, p_Stack, Prio); //具体平台任务创建函数
+        OSSetPrioRdy(Prio);                   // 在任务就绪表中登记
     }
 }
 
@@ -64,15 +63,15 @@ void RAYS_TaskCreate(void (*p_Task)(void),STACK_TypeDef *p_Stack,PRIO_TypeDef Pr
 */
 void RAYS_Start(void)
 {
-    OSPrioCur = OSPrioHighRdy=0;   // 运行最高优先级任务
-    CPU_OSStart();                 // 具体平台系统启动函数								
+    OSPrioCur = OSPrioHighRdy = 0; // 运行最高优先级任务
+    CPU_OSStart();                 // 具体平台系统启动函数
 }
 
 /*
 +---------------------------------------------------------------------------------------+
 |函数名称:  RAYS_TimeDelay                                                              |
 |---------------------------------------------------------------------------------------|
-|函数原型: 	void RAYS_TimeDelay(TICKS_TypeDef ticks)                                    |
+|函数原型:  void RAYS_TimeDelay(TICKS_TypeDef ticks)                                    |
 |函数功能:  任务延时                                                                    |
 |入口参数:  延时的时间，任务等待时钟节拍的个数                                          |
 |有关说明:  延时数不得超出TICKS_TypeDef的范围                                           |
@@ -80,20 +79,19 @@ void RAYS_Start(void)
 */
 void RAYS_TimeDelay(TICKS_TypeDef ticks)
 {
-TICKS_TypeDef i=0;
-	if(ticks)                           	//如果需要延时         
-	{
-		OS_ENTER_CRITICAL();
-		OSDelPrioRdy(OSPrioCur);			// 把任务从就绪表中删去 
-		TCB[OSPrioCur].OSTCBDly = ticks;	// 设置任务延时节拍数   
-		OS_EXIT_CRITICAL();
-		for( i = 0;(i < OS_TASKS) && (!(OSRdyTbl & (0x01<<i)));i++ );//查找最高优先级算法
-			OSPrioHighRdy = i;	
-		OSSched();                          // 任务调度
-	}
+    TICKS_TypeDef i = 0;
+    if (ticks) {                            //如果需要延时
+        OS_ENTER_CRITICAL();
+        OSDelPrioRdy(OSPrioCur);            // 把任务从就绪表中删去
+        TCB[OSPrioCur].OSTCBDly = ticks;    // 设置任务延时节拍数
+        OS_EXIT_CRITICAL();
+        for (i = 0; (i < OS_TASKS) && (!(OSRdyTbl & (0x01 << i))); i++); //查找最高优先级算法
+        OSPrioHighRdy = i;
+        OSSched();                          // 任务调度
+    }
 }
 
-#if(TASK_SUSPEND_EN==1)	//是否启用任务挂起恢复功能
+#if (TASK_SUSPEND_EN==1) //是否启用任务挂起恢复功能
 /*
 +---------------------------------------------------------------------------------------+
 |函数名称:  RAYS_TaskSuspend                                                            |
@@ -105,20 +103,19 @@ TICKS_TypeDef i=0;
 */
 void RAYS_TaskSuspend(PRIO_TypeDef Prio)
 {
-	OS_ENTER_CRITICAL();
-	TCB[Prio].OSTCBDly = 0;
-	OSDelPrioRdy(Prio);				// 从任务就绪表上去除标志位
-	OS_EXIT_CRITICAL();
-		
-	if(OSPrioCur == Prio)			// 当要挂起的任务为当前任务	
-	{
-		OSSched();					// 重新调度					
-	}	
+    OS_ENTER_CRITICAL();
+    TCB[Prio].OSTCBDly = 0;
+    OSDelPrioRdy(Prio);             // 从任务就绪表上去除标志位
+    OS_EXIT_CRITICAL();
+
+    if (OSPrioCur == Prio) {        // 当要挂起的任务为当前任务
+        OSSched();                  // 重新调度
+    }
 }
 
 /*
 +---------------------------------------------------------------------------------------+
-|函数名称：	RAYS_TaskResume                                                             |
+|函数名称： RAYS_TaskResume                                                             |
 |---------------------------------------------------------------------------------------|
 |函数原型:  void RAYS_TaskResume(PRIO_TypeDef Prio)                                     |
 |函数功能:  任务恢复                                                                    |
@@ -127,18 +124,17 @@ void RAYS_TaskSuspend(PRIO_TypeDef Prio)
 */
 void RAYS_TaskResume(PRIO_TypeDef Prio)
 {
-	OS_ENTER_CRITICAL();
-	OSSetPrioRdy(Prio);				// 从任务就绪表上重置标志位	
-    TCB[Prio].OSTCBDly = 0;			// 将时间计时设为0,延时到	
-	OS_EXIT_CRITICAL();
-	
-	if(OSPrioCur > Prio)			// 当前任务的优先级低于重置位的任务的优先级	
-	{
-		OSSched();					// 重新调度					
-	}
-	
+    OS_ENTER_CRITICAL();
+    OSSetPrioRdy(Prio);             // 从任务就绪表上重置标志位
+    TCB[Prio].OSTCBDly = 0;         // 将时间计时设为0,延时到
+    OS_EXIT_CRITICAL();
+
+    if (OSPrioCur > Prio) {         // 当前任务的优先级低于重置位的任务的优先级
+        OSSched();                  // 重新调度
+    }
+
 }
-#endif	 //对应 #if(TASK_SUSPEND_EN==1)
+#endif   //对应 #if(TASK_SUSPEND_EN==1)
 /*
 +---------------------------------------------------------------------------------------+
 |函数名称:  TickIntHook                                                                 |
@@ -148,24 +144,21 @@ void RAYS_TaskResume(PRIO_TypeDef Prio)
 |有关说明:  用来为需要延时的任务进行计时                                                |
 +---------------------------------------------------------------------------------------+
 */
- void TickIntHook(void)
-	{
-		INT8U i;
+void TickIntHook(void)
+{
+    INT8U i;
 
-		for(i = 0; i < OS_TASKS; i++)			// 刷新各任务时钟 
-		{
-			if(TCB[i].OSTCBDly )
-			{
-				TCB[i].OSTCBDly --;
-				if(TCB[i].OSTCBDly == 0)		// 当任务时钟到时,必须是由定时器减时的才行
-				{
-					OSSetPrioRdy(i);		    // 使任务可以重新运行		
-				}
-			}
-		}
-		for( i = 0;(i < OS_TASKS) && (!(OSRdyTbl & (0x01<<i)));i++ );//查找最高优先级算法
-			OSPrioHighRdy = i;	
-} 
+    for (i = 0; i < OS_TASKS; i++) {        // 刷新各任务时钟
+        if (TCB[i].OSTCBDly) {
+            TCB[i].OSTCBDly --;
+            if (TCB[i].OSTCBDly == 0) {     // 当任务时钟到时,必须是由定时器减时的才行
+                OSSetPrioRdy(i);            // 使任务可以重新运行
+            }
+        }
+    }
+    for (i = 0; (i < OS_TASKS) && (!(OSRdyTbl & (0x01 << i))); i++); //查找最高优先级算法
+    OSPrioHighRdy = i;
+}
 
 /*
 +---------------------------------------------------------------------------------------+
@@ -177,10 +170,12 @@ void RAYS_TaskResume(PRIO_TypeDef Prio)
 +---------------------------------------------------------------------------------------+
 */
 void Idle_Task(void)
-{	
-	IdleCount = 0;
-	while(1)
+{
+    IdleCount = 0;
+    while (1){
 		IdleCount++;
+		asm("WFI");
+	}
 }
 
 /*
@@ -193,7 +188,7 @@ void Idle_Task(void)
 */
 void RAYS_Init(void)
 {
-	OSRdyTbl = 0;
-	OSPrioCur = OSPrioHighRdy = OS_TASKS;
+    OSRdyTbl = 0;
+    OSPrioCur = OSPrioHighRdy = OS_TASKS;
 }
 
